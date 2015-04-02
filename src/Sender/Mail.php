@@ -25,7 +25,7 @@ class Mail implements SenderInterface
      * Метод подготавливает письмо к отправке и отправляет его
      * Возвращает true, если отправка прошла успешно
      *
-     * @param \Sendmail\Message
+     * @param \Sendmail\Message $message
      *
      * @return boolean
      */

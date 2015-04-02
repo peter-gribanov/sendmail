@@ -78,7 +78,7 @@ class Collection implements \Iterator, \Countable
     /**
      * Конструктор
      *
-     * @param \Sendmail\Sender\SenderInterface
+     * @param \Sendmail\Sender\SenderInterface $sender
      */
     protected function __construct(SenderInterface $sender)
     {
@@ -89,7 +89,7 @@ class Collection implements \Iterator, \Countable
     /**
      * Создает объект коллекции
      * 
-     * @param \Sendmail\Sender\SenderInterface
+     * @param \Sendmail\Sender\SenderInterface $sender
      *
      * @return \Sendmail\Collection
      */
@@ -163,7 +163,7 @@ class Collection implements \Iterator, \Countable
     /**
      * Очищает список сообщений
      *
-     * @return Collection
+     * @return \Sendmail\Collection
      */
     public function clear()
     {
@@ -175,7 +175,7 @@ class Collection implements \Iterator, \Countable
     /**
      * Добовляет сообщение в очередь
      *
-     * @param \Sendmail\Message
+     * @param \Sendmail\Message $message
      *
      * @return \Sendmail\Collection
      */
@@ -190,22 +190,20 @@ class Collection implements \Iterator, \Countable
     /**
      * Добовляет в очередь сообщение адресованное списку пользователей
      *
-     * @param array
-     * @param \Sendmail\Message
+     * @param array $recipients
+     * @param \Sendmail\Message $message
      *
      * @return \Sendmail\Collection
      */
-    public function notification($recipients, Message $message)
+    public function notification(array $recipients, Message $message)
     {
         $message
             ->setCharset($this->charset)
             ->setFrom($this->from, $this->from_name);
 
-        if (is_array($recipients) && $recipients) {
-            // дублирование сообщения с разными получателями
-            foreach ($recipients as $recipient) {
-                $this->messages[] = $message->setTo($recipient);
-            }
+        // дублирование сообщения с разными получателями
+        foreach ($recipients as $recipient) {
+            $this->messages[] = $message->setTo($recipient);
         }
         return $this;
     }
@@ -213,8 +211,8 @@ class Collection implements \Iterator, \Countable
     /**
      * Устанавливает отправителя
      *
-     * @param string
-     * @param string
+     * @param string $from
+     * @param string $name
      *
      * @return \Sendmail\Collection
      */
@@ -228,7 +226,7 @@ class Collection implements \Iterator, \Countable
     /**
      * Устанавливает кодировку отправляемых писем
      *
-     * @param string
+     * @param string $charset
      *
      * @return \Sendmail\Collection
      */

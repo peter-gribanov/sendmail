@@ -62,9 +62,9 @@ class Smtp implements SenderInterface
     /**
      * Cоединения с SMTP сервером
      *
-     * @var integer
+     * @var resource
      */
-    private $connect = 0;
+    private $connect;
 
     /**
      * Параметры соединения
@@ -77,9 +77,9 @@ class Smtp implements SenderInterface
     /**
      * Конструктор класса
      *
-     * @param string SMTP сервер
-     * @param string Логин пользователя для авторизации
-     * @param string Пароль пользователя для авторизации
+     * @param string $server SMTP сервер
+     * @param string $username Логин пользователя для авторизации
+     * @param string $password Пароль пользователя для авторизации
      */
     public function __construct($server, $username = '', $password = '')
     {
@@ -105,7 +105,7 @@ class Smtp implements SenderInterface
      * Метод подготавливает письмо к отправке и отправляет его
      * Возвращает true, если отправка прошла успешно
      *
-     * @param \Sendmail\Message
+     * @param \Sendmail\Message $message
      *
      * @return boolean
      */
@@ -194,9 +194,11 @@ class Smtp implements SenderInterface
     }
 
     /**
-     * Устанавливает максимальное время ожидания ответа от сервера 
+     * Устанавливает максимальное время ожидания ответа от сервера
      *
-     * @param integer
+     * @throws \InvalidArgumentException
+     *
+     * @param integer $timeout
      *
      * @return \Sendmail\Sender\Smtp
      */
@@ -223,7 +225,7 @@ class Smtp implements SenderInterface
     /**
      * Отправляет серверу запрос и возвращает ответ
      *
-     * @param string
+     * @param string $call
      *
      * @return string
      */
@@ -242,7 +244,9 @@ class Smtp implements SenderInterface
      * Проверяет, является ли ответ сервера успешным
      * и в случае ошибки вызывает исключение
      *
-     * @param string
+     * @throws \Exception
+     *
+     * @param string $reply
      */
     private function valid(&$reply)
     {
@@ -262,9 +266,9 @@ class Smtp implements SenderInterface
      * ]
      * </code>
      *
-     * @param string
+     * @param string $reply
      *
-     * @return array 
+     * @return array
      */
     private function parse(&$reply)
     {
@@ -277,7 +281,9 @@ class Smtp implements SenderInterface
     /**
      * Проверяет, является ли ответ сервера успешным
      *
-     * @param string
+     * @param string $reply
+     *
+     * @return boolean
      */
     private function isSuccess(&$reply)
     {

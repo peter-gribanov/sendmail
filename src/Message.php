@@ -91,7 +91,9 @@ class Message
     /**
      * Устанавливает кодировку отправляемых писем
      *
-     * @param string
+     * @throws \InvalidArgumentException
+     *
+     * @param string $charset
      *
      * @return \Sendmail\Message
      */
@@ -106,9 +108,11 @@ class Message
 
     /**
      * Устанавливает E-mail и имя отправителя
+     *
+     * @throws \InvalidArgumentException
      * 
-     * @param string
-     * @param string
+     * @param string $from
+     * @param string $from_name
      *
      * @return \Sendmail\Message
      */
@@ -135,7 +139,9 @@ class Message
     /**
      * Устанавливает E-mail получателя
      *
-     * @param string
+     * @throws \InvalidArgumentException
+     *
+     * @param string $to
      *
      * @return \Sendmail\Message
      */
@@ -161,7 +167,9 @@ class Message
     /**
      * Устанавливает заголовок сообщения
      *
-     * @param string
+     * @throws \InvalidArgumentException
+     *
+     * @param string $subject
      *
      * @return \Sendmail\Message
      */
@@ -187,7 +195,9 @@ class Message
     /**
      * Устанавливает тело сообщения
      *
-     * @param string
+     * @throws \InvalidArgumentException
+     *
+     * @param string $message
      *
      * @return \Sendmail\Message
      */
