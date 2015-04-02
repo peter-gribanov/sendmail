@@ -1,4 +1,13 @@
 ﻿<?php
+/**
+ * SendMail package
+ *
+ * @package   SendMail
+ * @author    Peter Gribanov <info@peter-gribanov.ru>
+ * @copyright Copyright (c) 2010, Peter Gribanov
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+
 namespace Sendmail\Sender;
 
 use Sendmail\Sender;
@@ -7,10 +16,8 @@ use Sendmail\Message;
 /**
  * Класс отправки E-mail сообщений через PHP функцию mail()
  *
- * @package   SendMail
- * @author    Peter Gribanov <info@peter-gribanov.ru>
- * @copyright Copyright (c) 2010, Peter Gribanov
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package SendMail\Sender
+ * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Mail implements Sender
 {

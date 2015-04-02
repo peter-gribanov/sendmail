@@ -1,13 +1,20 @@
 ﻿<?php
-namespace Sendmail;
-
 /**
- * Класс описывающий сообщение
+ * SendMail package
  *
  * @package   SendMail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Sendmail;
+
+/**
+ * Класс описывающий сообщение
+ *
+ * @package SendMail
+ * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Message
 {

@@ -1,4 +1,13 @@
 ﻿<?php
+/**
+ * SendMail package
+ *
+ * @package   SendMail
+ * @author    Peter Gribanov <info@peter-gribanov.ru>
+ * @copyright Copyright (c) 2010, Peter Gribanov
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+
 namespace Sendmail;
 
 use Sendmail\Collection;
@@ -9,10 +18,8 @@ use Sendmail\Sender\Smtp;
 /**
  * Класс отправки E-mail сообщений
  *
- * @package   SendMail
- * @author    Peter Gribanov <info@peter-gribanov.ru>
- * @copyright Copyright (c) 2010, Peter Gribanov
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package SendMail
+ * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Facade
 {

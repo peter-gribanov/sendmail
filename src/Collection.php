@@ -1,4 +1,13 @@
 ﻿<?php
+/**
+ * SendMail package
+ *
+ * @package   SendMail
+ * @author    Peter Gribanov <info@peter-gribanov.ru>
+ * @copyright Copyright (c) 2010, Peter Gribanov
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+
 namespace Sendmail;
 
 use Sendmail\Sender;
@@ -6,11 +15,9 @@ use Sendmail\Message;
 
 /**
  * Очередь E-Mail сообщений
- * 
- * @package   SendMail
- * @author    Peter Gribanov <info@peter-gribanov.ru>
- * @copyright Copyright (c) 2010, Peter Gribanov
- * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @package SendMail
+ * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Collection implements \Iterator, \Countable
 {
