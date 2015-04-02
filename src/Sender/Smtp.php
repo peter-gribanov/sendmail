@@ -179,7 +179,7 @@ class Smtp implements SenderInterface
             $this->valid($this->call($message->getHeaders()
                 ."\r\n\r\n".$message->getMessage()."\r\n."));
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->errno = $e->getCode();
             $this->errstr = $e->getMessage();
         }
