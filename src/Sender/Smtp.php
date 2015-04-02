@@ -117,7 +117,7 @@ class Smtp implements SenderInterface
         $this->log = '';
 
         // Установка соединения с SMTP сервером
-        $this->connect = @fsockopen(
+        $this->connect = fsockopen(
             $this->options['server'],
             $this->options['port'],
             $this->errno,
