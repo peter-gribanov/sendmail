@@ -1,8 +1,8 @@
 <?php
 /**
- * SendMail package
+ * Sendmail package
  *
- * @package   SendMail
+ * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -10,13 +10,13 @@
 
 namespace Sendmail;
 
-use Sendmail\Sender;
+use Sendmail\Sender\SenderInterface;
 use Sendmail\Message;
 
 /**
  * Очередь E-Mail сообщений
  *
- * @package SendMail
+ * @package Sendmail
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Collection implements \Iterator, \Countable
@@ -48,7 +48,7 @@ class Collection implements \Iterator, \Countable
     /**
      * Объект для отправки сообщений
      *
-     * @var \Sendmail\Sender
+     * @var \Sendmail\Sender\SenderInterface
      */
     private $sender;
 
@@ -78,9 +78,9 @@ class Collection implements \Iterator, \Countable
     /**
      * Конструктор
      *
-     * @param \Sendmail\Sender
+     * @param \Sendmail\Sender\SenderInterface
      */
-    protected function __construct(Sender $sender)
+    protected function __construct(SenderInterface $sender)
     {
         $this->sender = $sender;
         $this->status = 1;
@@ -89,11 +89,11 @@ class Collection implements \Iterator, \Countable
     /**
      * Создает объект коллекции
      * 
-     * @param \Sendmail\Sender
+     * @param \Sendmail\Sender\SenderInterface
      *
      * @return \Sendmail\Collection
      */
-    public static function create(Sender $sender)
+    public static function create(SenderInterface $sender)
     {
         return new self($sender);
     }
@@ -241,7 +241,7 @@ class Collection implements \Iterator, \Countable
     /**
      * Возвращает объект отправителя
      *
-     * @return \Sendmail\Sender
+     * @return \Sendmail\Sender\SenderInterface
      */
     public function getSender()
     {

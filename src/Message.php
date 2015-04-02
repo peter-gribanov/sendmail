@@ -1,8 +1,8 @@
 <?php
 /**
- * SendMail package
+ * Sendmail package
  *
- * @package   SendMail
+ * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -13,7 +13,7 @@ namespace Sendmail;
 /**
  * Класс описывающий сообщение
  *
- * @package SendMail
+ * @package Sendmail
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Message

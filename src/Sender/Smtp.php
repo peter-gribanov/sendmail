@@ -1,8 +1,8 @@
 <?php
 /**
- * SendMail package
+ * Sendmail package
  *
- * @package   SendMail
+ * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -10,7 +10,7 @@
 
 namespace Sendmail\Sender;
 
-use Sendmail\Sender;
+use Sendmail\Sender\SenderInterface;
 use Sendmail\Message;
 
 /**
@@ -18,10 +18,10 @@ use Sendmail\Message;
  *
  * Модуль собран по стандартам протоколов SMTP и ESMTP
  *
- * @package SendMail\Sender
+ * @package Sendmail\Sender
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
-class Smtp implements Sender
+class Smtp implements SenderInterface
 {
     /**
      * Текст последнего диалога с сервером
@@ -198,7 +198,7 @@ class Smtp implements Sender
      *
      * @param integer
      *
-     * @return \Sendmail\SenderSMTP
+     * @return \Sendmail\Sender\Smtp
      */
     public function setTimeOut($timeout)
     {
@@ -212,7 +212,7 @@ class Smtp implements Sender
     /**
      * Стартовать безопасное соединение
      *
-     * @return \Sendmail\SenderSMTP
+     * @return \Sendmail\Sender\Smtp
      */
     public function startSecure()
     {

@@ -10,7 +10,7 @@
 
 namespace Sendmail\Sender;
 
-use Sendmail\Sender;
+use Sendmail\Sender\SenderInterface;
 use Sendmail\Message;
 
 /**
@@ -19,7 +19,7 @@ use Sendmail\Message;
  * @package SendMail\Sender
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
-class Mail implements Sender
+class Mail implements SenderInterface
 {
     /**
      * Метод подготавливает письмо к отправке и отправляет его

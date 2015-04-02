@@ -1,8 +1,8 @@
 <?php
 /**
- * SendMail package
+ * Sendmail package
  *
- * @package   SendMail
+ * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -18,7 +18,7 @@ use Sendmail\Sender\Smtp;
 /**
  * Класс отправки E-mail сообщений
  *
- * @package SendMail
+ * @package Sendmail
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Facade
@@ -70,7 +70,7 @@ class Facade
      *
      * @param string $options
      *
-     * @return \Sendmail\Sender
+     * @return \Sendmail\Sender\SenderInterface
      */
     public static function Sender($options)
     {
