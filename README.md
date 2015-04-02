@@ -11,8 +11,8 @@ Package for send mails.
 ```php
 use Sendmail\Facade;
 
-Facade::Sender('mail')
-	->send(Facade::Message('user@domain.ru', 'Заголовок', 'Текст сообщения'));
+Facade::getSender('mail')
+	->send(Facade::getMessage('user@domain.ru', 'Заголовок', 'Текст сообщения'));
 ```
 
 ### Example 2 - send mail from SMTP
@@ -21,14 +21,14 @@ Facade::Sender('mail')
 use Sendmail\Facade;
 
 // инициализируем объект для отправки через SMTP протокол
-$sm = Facade::Collection('smtp://username:password@server:port')
+$sm = Facade::getCollection('smtp://username:password@server:port')
 	// устанавливаем кодировку
 	->setCharset('koi8-r')
 	// устанавливаем E-mail адрес отправителя и его имя 
 	->setFrom('sender@domain.ru', 'Sender')
 	// добавляем в очередь письма
-	->add(Facade::Message('user1@domain.ru', 'Заголовок 1', 'Текст сообщения 1'))
-	->add(Facade::Message('user2@domain.ru', 'Заголовок 2', 'Текст сообщения 2'));
+	->add(Facade::getMessage('user1@domain.ru', 'Заголовок 1', 'Текст сообщения 1'))
+	->add(Facade::getMessage('user2@domain.ru', 'Заголовок 2', 'Текст сообщения 2'));
 
 
 // проходим по очереди сообщений
@@ -62,7 +62,7 @@ use Sendmail\Facade;
 use Sendmail\Message;
 
 // инициализируем объект для отправки через PHP функцию mail()
-$sm = Facade::Collection('mail')
+$sm = Facade::getCollection('mail')
 	// добавляем в очередь письмо адресованое нескольким получателям
 	->notification(array(
 		'user1@domain.ru',
