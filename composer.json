@@ -1,0 +1,27 @@
+{
+	"name" : "gribanov/sendmail",
+	"license" : "MIT",
+	"type" : "library",
+	"description" : "Library for send mail",
+	"homepage" : "https://github.com/peter-gribanov/sendmail",
+	"authors" : [
+		{
+			"name" : "Peter Gribanov",
+			"email" : "info@peter-gribanov.ru"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"Sendmail\\" : "src/"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"Sendmail\\Tests\\" : "tests/"
+		}
+	},
+	"require" : {
+		"php" : ">=5.3.0",
+	},
+	"minimum-stability" : "dev"
+}

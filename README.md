@@ -9,7 +9,7 @@ Package for send mails.
 Отправка одного сообщения через PHP функцию [mail()](http://php.net/manual/en/book.mail.php)
 
 ```php
-use sendmail\Facade;
+use Sendmail\Facade;
 
 Facade::Sender('mail')
 	->send(Facade::Message('user@domain.ru', 'Заголовок', 'Текст сообщения'));
@@ -18,7 +18,7 @@ Facade::Sender('mail')
 ### Example 2 - send mail from SMTP
 
 ```php
-use sendmail\Facade;
+use Sendmail\Facade;
 
 // инициализируем объект для отправки через SMTP протокол
 $sm = Facade::Collection('smtp://username:password@server:port')
@@ -58,8 +58,8 @@ $sm->clear();
 ### Example 2 - send mail from SMTP
 
 ```php
-use sendmail\Facade;
-use sendmail\Message;
+use Sendmail\Facade;
+use Sendmail\Message;
 
 // инициализируем объект для отправки через PHP функцию mail()
 $sm = Facade::Collection('mail')
