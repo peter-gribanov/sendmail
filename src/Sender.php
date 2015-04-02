@@ -1,17 +1,17 @@
 ﻿<?php
 namespace Sendmail;
 
+use Sendmail\Message;
+
 /**
- * Класс отправки E-mail сообщений через PHP функцию mail()
+ * Интерфейс отправителей сообщений
  *
  * @package   SendMail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
- * @since     18.11.2010
- * @version   1.1
  */
-class SenderMail implements Sender
+interface Sender
 {
     /**
      * Метод подготавливает письмо к отправке и отправляет его
@@ -21,8 +21,5 @@ class SenderMail implements Sender
      *
      * @return boolen
      */
-    public function send(Message $message)
-    {
-        return @mail('', '', $message->getMessage(), $message->getHeaders());
-    }
+    public function send(Message $message);
 }

@@ -1,5 +1,8 @@
 ﻿<?php
-namespace Sendmail;
+namespace Sendmail\Sender;
+
+use Sendmail\Sender;
+use Sendmail\Message;
 
 /**
  * Класс отправки E-mail сообщений через соединение с сервером почты
@@ -10,10 +13,8 @@ namespace Sendmail;
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
- * @since     18.11.2010
- * @version   2.5
  */
-class SenderSMTP implements Sender
+class Smtp implements Sender
 {
     /**
      * Текст последнего диалога с сервером
@@ -41,7 +42,7 @@ class SenderSMTP implements Sender
      *
      * @var integer
      */
-    private $timeout = 0;
+    private $timeout = 60;
 
     /**
      * Требуется ли именно безопасное соединение
@@ -87,8 +88,10 @@ class SenderSMTP implements Sender
             'password' => $password
         );
 
-        // за таймаут берет 90% от max_execution_time
-        $this->timeout = ini_get('max_execution_time') * 0.9;
+        if (PHP_SAPI != 'cli') {
+            // за таймаут берет 90% от max_execution_time
+            $this->timeout = ini_get('max_execution_time') * 0.9;
+        }
     }
 
     /**

@@ -1,6 +1,9 @@
 ﻿<?php
 namespace Sendmail;
 
+use Sendmail\Sender;
+use Sendmail\Message;
+
 /**
  * Очередь E-Mail сообщений
  * 
@@ -8,8 +11,6 @@ namespace Sendmail;
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
- * @since     18.11.2010
- * @version   1.4
  */
 class Collection implements \Iterator, \Countable
 {

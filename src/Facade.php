@@ -1,8 +1,10 @@
 ﻿<?php
 namespace Sendmail;
 
-include 'Message.php';
-include 'Sender.php';
+use Sendmail\Collection;
+use Sendmail\Message;
+use Sendmail\Sender\Mail;
+use Sendmail\Sender\Smtp;
 
 /**
  * Класс отправки E-mail сообщений
@@ -11,8 +13,6 @@ include 'Sender.php';
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
- * @since     18.11.2010
- * @version   1.5
  */
 class Facade
 {
@@ -40,7 +40,6 @@ class Facade
      */
     public static function Collection($options)
     {
-        include_once 'Collection.php';
         return Collection::create(self::createSender($options));
     }
 
@@ -70,8 +69,7 @@ class Facade
     {
         // модуль PHP функции mail()
         if ($options == 'mail') {
-            include_once 'SenderMail.php';
-            return new SenderMail();
+            return new Mail();
         }
 
         // настройки по умолчанию для SMTP
@@ -93,8 +91,7 @@ class Facade
 
         // модуль SMTP соединения
         if ($options['scheme'] == 'smtp') {
-            include_once 'SenderSMTP.php';
-            return new SenderSMTP(
+            return new Smtp(
                 $options['host'].':'.$options['port'],
                 $options['user'],
                 $options['pass']
