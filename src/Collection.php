@@ -22,6 +22,34 @@ use Sendmail\Message;
 class Collection implements \Iterator, \Countable
 {
     /**
+     * Кодировка по умолчанию
+     *
+     * @var integer
+     */
+    const DEFAULT_CHARSET = 'utf-8';
+
+    /**
+     * Объект еще не создан
+     *
+     * @var integer
+     */
+    const STATUS_NOT_INIT = 0;
+
+    /**
+     * Создан, готов к работе
+     *
+     * @var integer
+     */
+    const STATUS_READY = 1;
+
+    /**
+     * Отправляет сообщение
+     *
+     * @var integer
+     */
+    const STATUS_SENDS = 2;
+
+    /**
      * Внутренний указатель
      *
      * @var integer
@@ -37,13 +65,10 @@ class Collection implements \Iterator, \Countable
 
     /**
      * Текущий статус объекта
-     * 0 - объект еще не создан
-     * 1 - создан, готов к работе
-     * 2 - отправляет сообщение
      *
      * @var integer
      */
-    private $status = 0;
+    private $status = self::STATUS_NOT_INIT;
 
     /**
      * Объект для отправки сообщений
@@ -54,11 +79,10 @@ class Collection implements \Iterator, \Countable
 
     /**
      * Кодировка отправляемых писем
-     * По умолчанию windows-1251
      *
      * @var string
      */
-    private $charset = 'windows-1251';
+    private $charset = self::DEFAULT_CHARSET;
 
     /**
      * E-Mail отправителя
@@ -83,7 +107,7 @@ class Collection implements \Iterator, \Countable
     protected function __construct(SenderInterface $sender)
     {
         $this->sender = $sender;
-        $this->status = 1;
+        $this->status = self::STATUS_READY;
     }
 
     /**
@@ -259,16 +283,16 @@ class Collection implements \Iterator, \Countable
         }
 
         // ждем освобождения очереди
-        while ($this->status != 1) {}
+        while ($this->status != self::STATUS_READY) {}
 
         // устанавливаем метку, что объект начал отправлять сообщение
-        $this->status = 2;
+        $this->status = self::STATUS_SENDS;
 
         // получаем письмо и отправляем его
         $result = $this->sender->send($this->current());
 
         // объект освободился и снова готов к работе
-        $this->status = 1;
+        $this->status = self::STATUS_READY;
 
         return $result;
     }

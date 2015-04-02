@@ -19,12 +19,18 @@ namespace Sendmail;
 class Message
 {
     /**
-     * Кодировка отправляемых писем
-     * По умолчанию windows-1251
+     * Кодировка по умолчанию
      *
      * @var string
      */
-    private $charset = 'windows-1251';
+    const DEFAULT_CHARSET = 'utf-8';
+
+    /**
+     * Кодировка отправляемых писем
+     *
+     * @var string
+     */
+    private $charset = self::DEFAULT_CHARSET;
 
     /**
      * E-Mail отправителя
