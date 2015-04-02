@@ -238,16 +238,19 @@ class Message
      */
     public function getHeaders()
     {
-        $conttype = 'Content-type: text/'.($this->in_html ? 'html' : 'plain')
-            .'; charset="'.$this->charset."\"\r\n";
+        $from_name = '';
+        if ($this->from_name) {
+            $from_name = '=?'.$this->charset.'?B?'.base64_encode($this->from_name).'?=';
+        }
+        $subject = '=?'.$this->charset.'?B?'.base64_encode($this->subject).'?=';
+        $type = 'text/'.($this->in_html ? 'html' : 'plain');
 
-        // составление заголовков
-        return $conttype.'Subject: '.$this->subject."\r\n"
-            . 'MIME-Version: 1.0'."\r\n"
-            . $conttype
-            . 'To: '.$this->to."\r\n"
-            . 'From: '.$this->from_name.' <'.$this->from.'>'."\r\n"
-            . 'X-Sender: '.$_SERVER['HTTP_HOST']."\r\n"
-            . 'X-Mailer: PHP/'.PHP_VERSION."\r\n";
+        return 'Content-type: '.$type.'; charset="'.$this->charset."\"\r\n".
+            'Subject: '.$subject."\r\n".
+            'MIME-Version: 1.0'."\r\n".
+            'Content-type: '.$type.'; charset="'.$this->charset."\"\r\n".
+            'To: '.$this->to."\r\n".
+            'From: '.$from_name.' <'.$this->from.'>'."\r\n".
+            'Reply-To: '.$from_name.' <'.$this->from.'>'."\r\n";
     }
 }
