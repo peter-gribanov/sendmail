@@ -45,7 +45,7 @@ class Facade
      *
      * @return \Sendmail\Collection
      */
-    public static function getCollection($options)
+    public static function createCollection($options)
     {
         return Collection::create(self::createSender($options));
     }
@@ -72,7 +72,7 @@ class Facade
      *
      * @return \Sendmail\Sender\SenderInterface
      */
-    public static function getSender($options)
+    public static function createSender($options)
     {
         // модуль PHP функции mail()
         if ($options == 'mail') {
@@ -117,7 +117,7 @@ class Facade
      *
      * @return \Sendmail\Message
      */
-    public static function getMessage($to, $subject, $message)
+    public static function createMessage($to, $subject, $message)
     {
         return Message::create()
             ->setTo($to)
