@@ -64,7 +64,7 @@ class Message
     /**
      * Собщение в формате HTML
      *
-     * @var boolen
+     * @var boolean
      */
     private $in_html = false;
 

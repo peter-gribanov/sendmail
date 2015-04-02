@@ -132,7 +132,7 @@ class Collection implements \Iterator, \Countable
     /**
      * Проверяет, существует ли сообщение c данным указателем
      *
-     * @return boolen
+     * @return boolean
      */
     public function valid()
     {
@@ -251,7 +251,7 @@ class Collection implements \Iterator, \Countable
     /**
      * Отправляет письмо текущее в коллекции
      * 
-     * @return boolen
+     * @return boolean
      */
     public function send()
     {
@@ -278,7 +278,7 @@ class Collection implements \Iterator, \Countable
     /**
      * Отправляет все письма в коллекции
      *
-     * @return boolen
+     * @return boolean
      */
     public function sendAll()
     {

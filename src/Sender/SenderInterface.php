@@ -26,7 +26,7 @@ interface SenderInterface
      *
      * @param \Sendmail\Message
      *
-     * @return boolen
+     * @return boolean
      */
     public function send(Message $message);
 }

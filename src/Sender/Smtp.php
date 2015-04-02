@@ -55,7 +55,7 @@ class Smtp implements SenderInterface
      * Требуется ли именно безопасное соединение
      * По умолчанию нет
      *
-     * @var boolen
+     * @var boolean
      */
     private $secure = false;
 
@@ -107,7 +107,7 @@ class Smtp implements SenderInterface
      *
      * @param \Sendmail\Message
      *
-     * @return boolen
+     * @return boolean
      */
     public function send(Message $message)
     {
