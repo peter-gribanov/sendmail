@@ -261,9 +261,7 @@ class Collection implements \Iterator, \Countable
         }
 
         // ждем освобождения очереди
-        while ($this->status != 1) {
-            sleep(1);
-        }
+        while ($this->status != 1) {}
 
         // устанавливаем метку, что объект начал отправлять сообщение
         $this->status = 2;
