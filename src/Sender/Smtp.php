@@ -97,7 +97,7 @@ class Smtp implements SenderInterface
 
         if (PHP_SAPI != 'cli') {
             // за таймаут берет 90% от max_execution_time
-            $this->timeout = (int)ini_get('max_execution_time') * 0.9;
+            $this->timeout = (int)(ini_get('max_execution_time') * 0.9);
         }
     }
 
