@@ -47,9 +47,9 @@ class Smtp implements SenderInterface
     /**
      * Время ожидания реакции от сервера
      *
-     * @var float
+     * @var integer
      */
-    private $timeout = 60.0;
+    private $timeout = 60;
 
     /**
      * Требуется ли именно безопасное соединение
@@ -97,7 +97,7 @@ class Smtp implements SenderInterface
 
         if (PHP_SAPI != 'cli') {
             // за таймаут берет 90% от max_execution_time
-            $this->timeout = ini_get('max_execution_time') * 0.9;
+            $this->timeout = (int)ini_get('max_execution_time') * 0.9;
         }
     }
 
