@@ -47,9 +47,9 @@ class Smtp implements SenderInterface
     /**
      * Время ожидания реакции от сервера
      *
-     * @var integer
+     * @var float
      */
-    private $timeout = 60;
+    private $timeout = 60.0;
 
     /**
      * Требуется ли именно безопасное соединение
