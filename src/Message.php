@@ -85,16 +85,6 @@ class Message
     }
 
     /**
-     * Создает экземпляр класса
-     *
-     * @return \Sendmail\Message
-     */
-    public static function create()
-    {
-        return new self();
-    }
-
-    /**
      * Устанавливает кодировку отправляемых писем
      *
      * @throws \InvalidArgumentException

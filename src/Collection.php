@@ -104,24 +104,12 @@ class Collection implements \Iterator, \Countable
      *
      * @param \Sendmail\Sender\SenderInterface $sender
      */
-    protected function __construct(SenderInterface $sender)
+    public function __construct(SenderInterface $sender)
     {
         $this->sender = $sender;
         $this->status = self::STATUS_READY;
     }
 
-    /**
-     * Создает объект коллекции
-     * 
-     * @param \Sendmail\Sender\SenderInterface $sender
-     *
-     * @return \Sendmail\Collection
-     */
-    public static function create(SenderInterface $sender)
-    {
-        return new self($sender);
-    }
-    
     /**
      * Возвращает текущее сообщение
      *
