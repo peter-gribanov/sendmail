@@ -127,7 +127,7 @@ class Smtp implements SenderInterface
 
         // Проверка, установлено ли SMTP соединение
         if (!is_resource($this->connect)) {
-            if ($this->errno == 0) {
+            if ($this->errno === 0 || !$this->errstr) {
                 $this->errstr = 'Failed connect to: '.$this->options['server'];
             }
             return false;
