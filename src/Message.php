@@ -11,7 +11,7 @@
 namespace Sendmail;
 
 /**
- * Класс описывающий сообщение
+ * Message
  *
  * @package Sendmail
  * @author  Peter Gribanov <info@peter-gribanov.ru>
@@ -19,56 +19,56 @@ namespace Sendmail;
 class Message
 {
     /**
-     * Кодировка по умолчанию
+     * Default charset
      *
      * @var string
      */
     const DEFAULT_CHARSET = 'utf-8';
 
     /**
-     * Кодировка отправляемых писем
+     * Message charset
      *
      * @var string
      */
     protected $charset = self::DEFAULT_CHARSET;
 
     /**
-     * E-Mail отправителя
+     * E-Mail from
      *
      * @var string
      */
     protected $from = '';
 
     /**
-     * Имя отправителя
+     * E-Mail from name
      *
      * @var string
      */
     protected $from_name = '';
 
     /**
-     * E-mail получателя
+     * E-mail to
      *
      * @var string
      */
     protected $to = '';
 
     /**
-     * Заголовок
+     * Subject
      *
      * @var string
      */
     protected $subject = '';
 
     /**
-     * Текст сообщение
+     * Message text
      *
      * @var string
      */
-    protected $message = '';
+    protected $text = '';
 
     /**
-     * Собщение в формате HTML
+     * In HTML format
      *
      * @var boolean
      */
@@ -76,7 +76,7 @@ class Message
 
 
     /**
-     * Конструктор
+     * Construct
      */
     public function __construct()
     {
@@ -85,7 +85,7 @@ class Message
     }
 
     /**
-     * Устанавливает кодировку отправляемых писем
+     * Set message charset
      *
      * @param string $charset
      *
@@ -98,7 +98,7 @@ class Message
     }
 
     /**
-     * Устанавливает E-mail и имя отправителя
+     * Set E-mail from
      * 
      * @param string $from
      * @param string $from_name
@@ -113,7 +113,7 @@ class Message
     }
 
     /**
-     * Возвращает E-mail отправителя
+     * Get E-mail from
      *
      * @return string
      */
@@ -123,7 +123,7 @@ class Message
     }
 
     /**
-     * Устанавливает E-mail получателя
+     * Set E-mail to
      *
      * @param string $to
      *
@@ -136,7 +136,7 @@ class Message
     }
 
     /**
-     * Возвращает E-mail получателя
+     * Get E-mail to
      *
      * @return string
      */
@@ -146,7 +146,7 @@ class Message
     }
 
     /**
-     * Устанавливает заголовок сообщения
+     * Set message subject
      *
      * @param string $subject
      *
@@ -159,7 +159,7 @@ class Message
     }
 
     /**
-     * Возвращает заголовок сообщения
+     * Get message subject
      *
      * @return string
      */
@@ -169,30 +169,30 @@ class Message
     }
 
     /**
-     * Устанавливает тело сообщения
+     * Set message text
      *
-     * @param string $message
+     * @param string $text
      *
      * @return \Sendmail\Message
      */
-    public function setMessage($message)
+    public function setText($text)
     {
-        $this->message = $message;
+        $this->text = $text;
         return $this;
     }
 
     /**
-     * Возвращает тело сообщения
+     * Get message text
      *
      * @return string
      */
-    public function getMessage()
+    public function getText()
     {
-        return $this->message;
+        return $this->text;
     }
 
     /**
-     * Устанавливает что сообщение надо отправлять в формате HTML
+     * Send E-mail in HTML format
      *
      * @return \Sendmail\Message
      */
@@ -203,7 +203,7 @@ class Message
     }
 
     /**
-     * Составляет заголовки и возвращает их
+     * Get E-mail headers
      *
      * @return string
      */

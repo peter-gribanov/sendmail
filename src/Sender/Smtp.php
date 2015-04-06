@@ -177,7 +177,7 @@ class Smtp implements SenderInterface
             // Отправляем заголовок и само сообщение.
             // Точка в самом конце означает конец сообщения
             $this->valid($this->call($message->getHeaders()
-                ."\r\n\r\n".$message->getMessage()."\r\n."));
+                ."\r\n\r\n".$message->getText()."\r\n."));
 
         } catch (\Exception $e) {
             $this->errno = $e->getCode();

@@ -31,6 +31,6 @@ class Mail implements SenderInterface
      */
     public function send(Message $message)
     {
-        return mail('', '', $message->getMessage(), $message->getHeaders());
+        return mail('', '', $message->getText(), $message->getHeaders());
     }
 }
