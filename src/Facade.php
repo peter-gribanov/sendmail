@@ -43,11 +43,11 @@ class Facade
      *
      * @param string $options
      *
-     * @return \Sendmail\Collection
+     * @return \Sendmail\Queue
      */
-    public function createCollection($options)
+    public function createQueue($options)
     {
-        return new Collection($this->createSender($options));
+        return new Queue($this->createSender($options));
     }
 
     /**
