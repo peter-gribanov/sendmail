@@ -30,49 +30,49 @@ class Message
      *
      * @var string
      */
-    private $charset = self::DEFAULT_CHARSET;
+    protected $charset = self::DEFAULT_CHARSET;
 
     /**
      * E-Mail отправителя
      *
      * @var string
      */
-    private $from = '';
+    protected $from = '';
 
     /**
      * Имя отправителя
      *
      * @var string
      */
-    private $from_name = '';
+    protected $from_name = '';
 
     /**
      * E-mail получателя
      *
      * @var string
      */
-    private $to = '';
+    protected $to = '';
 
     /**
      * Заголовок
      *
      * @var string
      */
-    private $subject = '';
+    protected $subject = '';
 
     /**
      * Текст сообщение
      *
      * @var string
      */
-    private $message = '';
+    protected $message = '';
 
     /**
      * Собщение в формате HTML
      *
      * @var boolean
      */
-    private $in_html = false;
+    protected $in_html = false;
 
 
     /**
@@ -87,25 +87,18 @@ class Message
     /**
      * Устанавливает кодировку отправляемых писем
      *
-     * @throws \InvalidArgumentException
-     *
      * @param string $charset
      *
      * @return \Sendmail\Message
      */
     public function setCharset($charset)
     {
-        if (!is_string($charset) || !trim($charset)) {
-            throw new \InvalidArgumentException('Incorrect message charset.');
-        }
         $this->charset = $charset;
         return $this;
     }
 
     /**
      * Устанавливает E-mail и имя отправителя
-     *
-     * @throws \InvalidArgumentException
      * 
      * @param string $from
      * @param string $from_name
@@ -114,9 +107,6 @@ class Message
      */
     public function setFrom($from, $from_name = '')
     {
-        if (!is_string($from) || !trim($from) || !is_string($from_name)) {
-            throw new \InvalidArgumentException('Sender E-Mail must not be empty.');
-        }
         $this->from = $from;
         $this->from_name = $from_name;
         return $this;
@@ -135,17 +125,12 @@ class Message
     /**
      * Устанавливает E-mail получателя
      *
-     * @throws \InvalidArgumentException
-     *
      * @param string $to
      *
      * @return \Sendmail\Message
      */
     public function setTo($to)
     {
-        if (!is_string($to) || !trim($to)) {
-            throw new \InvalidArgumentException('Recipient E-Mail must not be empty.');
-        }
         $this->to = $to;
         return $this;
     }
@@ -163,17 +148,12 @@ class Message
     /**
      * Устанавливает заголовок сообщения
      *
-     * @throws \InvalidArgumentException
-     *
      * @param string $subject
      *
      * @return \Sendmail\Message
      */
     public function setSubject($subject)
     {
-        if (!is_string($subject) || !trim($subject)) {
-            throw new \InvalidArgumentException('Mail subject must not be empty.');
-        }
         $this->subject = $subject;
         return $this;
     }
@@ -191,17 +171,12 @@ class Message
     /**
      * Устанавливает тело сообщения
      *
-     * @throws \InvalidArgumentException
-     *
      * @param string $message
      *
      * @return \Sendmail\Message
      */
     public function setMessage($message)
     {
-        if (!is_string($message) || !trim($message)) {
-            throw new \InvalidArgumentException('Mail message must not be empty.');
-        }
         $this->message = $message;
         return $this;
     }
