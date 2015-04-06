@@ -128,7 +128,7 @@ class Queue implements \IteratorAggregate, \Countable
      *
      * @return \Sendmail\Collection
      */
-    public function notification(array $recipients, Message $message)
+    public function notify(array $recipients, Message $message)
     {
         foreach ($recipients as $recipient) {
             $this->messages[] = $message->setTo($recipient);
