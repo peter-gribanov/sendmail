@@ -28,28 +28,28 @@ class Smtp implements SenderInterface
      *
      * @var string
      */
-    public $log = '';
+    protected $log = '';
 
     /**
      * Код ошибки, если таковая была. Иначе 0
      *
      * @var integer
      */
-    public $errno = 0;
+    protected $errno = 0;
 
     /**
      * Текст ошибки, если таковая была
      *
      * @var string
      */
-    public $errstr = '';
+    protected $errstr = '';
 
     /**
      * Время ожидания реакции от сервера
      *
      * @var integer
      */
-    private $timeout = 60;
+    protected $timeout = 60;
 
     /**
      * Требуется ли именно безопасное соединение
@@ -57,21 +57,21 @@ class Smtp implements SenderInterface
      *
      * @var boolean
      */
-    private $secure = false;
+    protected $secure = false;
 
     /**
      * Cоединения с SMTP сервером
      *
      * @var resource
      */
-    private $connect;
+    protected $connect;
 
     /**
      * Параметры соединения
      *
      * @var array
      */
-    private $options = array();
+    protected $options = array();
 
 
     /**
@@ -229,7 +229,7 @@ class Smtp implements SenderInterface
      *
      * @return string
      */
-    private function &call($call)
+    protected function &call($call)
     {
         fputs($this->connect, $call."\r\n");
 
@@ -248,7 +248,7 @@ class Smtp implements SenderInterface
      *
      * @param string $reply
      */
-    private function valid(&$reply)
+    protected function valid(&$reply)
     {
         if (!$this->isSuccess($reply)) {
             list($code, $message) = $this->parse($reply);
@@ -270,7 +270,7 @@ class Smtp implements SenderInterface
      *
      * @return array
      */
-    private function parse(&$reply)
+    protected function parse(&$reply)
     {
         if (preg_match('/^(\d{3}).*?([-_ \.a-zA-Z]+)[\r|\n]/', $reply, $match)) {
             return array(intval($match[1]), trim($match[2]));
@@ -285,7 +285,7 @@ class Smtp implements SenderInterface
      *
      * @return boolean
      */
-    private function isSuccess(&$reply)
+    protected function isSuccess(&$reply)
     {
         // код положительного ответа начинается с двойки
         return $reply[0] == 2;
