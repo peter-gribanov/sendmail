@@ -9,82 +9,86 @@ Package for send mails.
 Отправка одного сообщения через PHP функцию [mail()](http://php.net/manual/en/book.mail.php)
 
 ```php
-use Sendmail\Facade;
+use Sendmail\Sender\Mail;
 
-$facade = new Facade();
-
-$facade->createSender('mail')
-	->send($facade->createMessage('user@domain.ru', 'Заголовок', 'Текст сообщения'));
+$message = new Message();
+$message
+	->setTo('user@example.com')
+	->setSubject('Заголовок')
+	->setMessage('Текст сообщения');
+$sender = new Mail();
+$sender->send($message);
 ```
 
 ### Example 2 - send mail from SMTP
 
 ```php
-use Sendmail\Facade;
+use Sendmail\Queue;
+use Sendmail\Message;
+use Sendmail\Sender\Smtp;
+use Sendmail\Sender\Smtp\Exception;
 
-$facade = new Facade();
+$message1 = new Message();
+$message1
+	->setTo('user1@example.com')
+	->setSubject('Заголовок 1')
+	->setMessage('Текст сообщения 1')
+	->setFrom('sender@example.com', 'Sender');
+$message2 = new Message();
+$message2
+	->setTo('user2@example.com')
+	->setSubject('Заголовок 2')
+	->setMessage('Текст сообщения 2')
+	->setFrom('sender@example.com', 'Sender');
 
-// инициализируем объект для отправки через SMTP протокол
-$sm = $facade->createCollection('smtp://username:password@server:port')
-	// устанавливаем кодировку
-	->setCharset('koi8-r')
-	// устанавливаем E-mail адрес отправителя и его имя 
-	->setFrom('sender@domain.ru', 'Sender')
-	// добавляем в очередь письма
-	->add($facade->createMessage('user1@domain.ru', 'Заголовок 1', 'Текст сообщения 1'))
-	->add($facade->createMessage('user2@domain.ru', 'Заголовок 2', 'Текст сообщения 2'));
+// отправка сообщений в очереди через прямое соединенияе с SMTP сервером
+$queue = new Queue(new Smtp('example.com', 25, 'username', 'password'));
+$queue->add(message1)->add(message2);
 
-
-// проходим по очереди сообщений
-while ($sm->valid()){
-	// отправляем текущее сообщение
-	$result = $sm->send();
-	// выводим результат отправки
-	var_dump($result);
-
-	// произошла ошибка при отправке
-	if (!$result){
-		// выводим текст ошибки
-		echo $sm->getSender()->errstr;
-		break;
-	}
-	// выводим текст диалога с сервером
-	echo '<pre>'.$sm->getSender()->getLog().'</pre>';
-	// переход к следующему элименту
-	$sm->next();
+try {
+	// отправляем все сообщения в очереди
+	var_dump($queue->send());
+} catch (Exception $e) {
+	// вывод текста диалога с сервером
+	echo $e->getDialogue()->getLog();
 }
 
 // очищаем очередь
-$sm->clear();
+$queue->clear();
 ```
 
 
 ### Example 2 - send mail from SMTP
 
 ```php
-use Sendmail\Facade;
+use Sendmail\Queue;
 use Sendmail\Message;
+use Sendmail\Sender\Mail;
 
-$facade = new Facade();
 $message = new Message();
+$message
+	->setSubject('Example subject')
+	->setMessage('<b>Test message.<b><br />You can remove this message.')
+	// устанавливаем адрес отправителя
+	->setFrom('sender@example.com')
+	// отправлять письмо в формате HTML
+	->inHTML();
 
 // инициализируем объект для отправки через PHP функцию mail()
-$sm = $facade->createCollection('mail')
-	// добавляем в очередь письмо адресованое нескольким получателям
-	->notification(array(
-		'user1@domain.ru',
-		'user2@domain.ru',
-		'user3@domain.ru'
-	), $message
-		->setSubject('Example subject')
-		->setMessage('<b>Test message.<b><br />You can remove this message.')
-		// устанавливаем адрес отправителя 
-		->setFrom('sender@domain.ru')
-		// отправлять письмо в формате HTML
-		->inHTML());
+$queue = new Queue(new Mail());
+// добавляем в очередь письмо адресованое нескольким получателям
+$queue
+	->notify(
+		array(
+			'user1@example.com',
+			'user2@example.com',
+			'user3@example.com'
+		),
+		$message
+	);
 
 // отправляет все сообщения в очереди
-$sm->sendAll();
+$queue->send();
 // очищаем очередь
-$sm->clear();
+$queue->clear();
 ```
