@@ -14,7 +14,7 @@ use Sendmail\Sender\SenderInterface;
 use Sendmail\Message;
 
 /**
- * Класс отправки E-mail сообщений через PHP функцию mail()
+ * E-mail messages sent via PHP function mail()
  *
  * @package SendMail\Sender
  * @author  Peter Gribanov <info@peter-gribanov.ru>
@@ -22,8 +22,7 @@ use Sendmail\Message;
 class Mail implements SenderInterface
 {
     /**
-     * Метод подготавливает письмо к отправке и отправляет его
-     * Возвращает true, если отправка прошла успешно
+     * Send E-mail message
      *
      * @param \Sendmail\Message $message
      *

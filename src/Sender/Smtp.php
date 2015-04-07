@@ -12,11 +12,11 @@ namespace Sendmail\Sender;
 
 use Sendmail\Sender\SenderInterface;
 use Sendmail\Message;
+use Sendmail\Sender\Smtp\Dialogue;
+use Sendmail\Sender\Smtp\Exception;
 
 /**
- * Класс отправки E-mail сообщений через соединение с сервером почты
- *
- * Модуль собран по стандартам протоколов SMTP и ESMTP
+ * SMTP/ESMTP sender RFC 5321
  *
  * @package Sendmail\Sender
  * @author  Peter Gribanov <info@peter-gribanov.ru>
@@ -24,86 +24,66 @@ use Sendmail\Message;
 class Smtp implements SenderInterface
 {
     /**
-     * Текст последнего диалога с сервером
-     *
-     * @var string
-     */
-    protected $log = '';
-
-    /**
-     * Код ошибки, если таковая была. Иначе 0
+     * The connection timeout
      *
      * @var integer
      */
-    protected $errno = 0;
+    protected $timeout = -1;
 
     /**
-     * Текст ошибки, если таковая была
-     *
-     * @var string
-     */
-    protected $errstr = '';
-
-    /**
-     * Время ожидания реакции от сервера
-     *
-     * @var integer
-     */
-    protected $timeout = 60;
-
-    /**
-     * Требуется ли именно безопасное соединение
-     * По умолчанию нет
+     * Use a secure connection
      *
      * @var boolean
      */
     protected $secure = false;
 
     /**
-     * Cоединения с SMTP сервером
+     * SMTP server
      *
-     * @var resource
+     * @var string
      */
-    protected $connect;
+    protected $server = '';
 
     /**
-     * Параметры соединения
+     * Connection port
      *
-     * @var array
+     * @var integer
      */
-    protected $options = array();
+    protected $port = 25;
+
+    /**
+     * Username for authorization
+     *
+     * @var string
+     */
+    protected $auth_username = '';
+
+    /**
+     * Password for authorization
+     *
+     * @var string
+     */
+    protected $auth_password = '';
 
 
     /**
-     * Конструктор класса
+     * Construct
      *
-     * @param string $server SMTP сервер
-     * @param string $username Логин пользователя для авторизации
-     * @param string $password Пароль пользователя для авторизации
+     * @param string $server
+     * @param integer $port
+     * @param string $username
+     * @param string $password
      */
-    public function __construct($server, $username = '', $password = '')
+    public function __construct($server, $port = 25, $username = '', $password = '')
     {
-        $port = 25;
-        if (strpos($server, ':') !== false) {
-            list($server, $port) = explode(':', $server, 2);
-        }
-
-        $this->options = array(
-            'server'   => $server,
-            'port'     => $port,
-            'username' => $username,
-            'password' => $password
-        );
-
-        if (PHP_SAPI != 'cli') {
-            // за таймаут берет 90% от max_execution_time
-            $this->timeout = (int)(ini_get('max_execution_time') * 0.9);
-        }
+        $this->server = $server;
+        $this->port = $port;
+        $this->auth_username = $username;
+        $this->auth_password = $password;
     }
 
     /**
-     * Метод подготавливает письмо к отправке и отправляет его
-     * Возвращает true, если отправка прошла успешно
+     * Send E-mail message
      *
      * @param \Sendmail\Message $message
      *
@@ -111,92 +91,51 @@ class Smtp implements SenderInterface
      */
     public function send(Message $message)
     {
-        $this->errno = 0;
-        $this->errstr = '';
-        // Обнуляем лог
-        $this->log = '';
-
-        // Установка соединения с SMTP сервером
-        $this->connect = fsockopen(
-            $this->options['server'],
-            $this->options['port'],
-            $this->errno,
-            $this->errstr,
-            $this->timeout
-        );
-
-        // Проверка, установлено ли SMTP соединение
-        if (!is_resource($this->connect)) {
-            if ($this->errno === 0 || !$this->errstr) {
-                $this->errstr = 'Failed connect to: '.$this->options['server'];
-            }
-            return false;
-        }
+        $dialogue = new Dialogue($this->server, $this->port, $this->timeout);
 
         // SMTP-сессия установлена, можно отправлять запросы
 
-        try {
-            // Соединено с?
-            $this->log = fgets($this->connect, 4096);
-
-            // Говорим EHLO
-            $reply =& $this->call('EHLO '.$_SERVER['HTTP_HOST']);
-
-            // Это протокол ESMTP
-            if ($this->isSuccess($reply)) {
-                // Если требуется, открываем TLS соединение, то открываем его
-                if ($this->secure) {
-                    $this->call('STARTTLS');
-                    // После старта TLS надо сказать еще раз EHLO
-                    $this->valid($this->call('EHLO '.$_SERVER['HTTP_HOST']));
-                }
-            } else {
-                $this->valid($this->call('HELO '.$_SERVER['HTTP_HOST']));
+        // is ESMTP?
+        if ($dialogue->call('EHLO '.$_SERVER['HTTP_HOST'])) {
+            // Если требуется, то открываем TLS соединение
+            if ($this->secure) {
+                $dialogue->call('STARTTLS');
+                // После старта TLS надо сказать еще раз EHLO
+                $dialogue->call('EHLO '.$_SERVER['HTTP_HOST'], true);
             }
-
-            if ($this->options['username'] && $this->options['password']) {
-                // Запрос на авторизованный логин
-                $this->call('AUTH LOGIN');
-                // Отправка имени пользователя
-                $this->call(base64_encode($this->options['username']));
-                // Отправка пароля
-                $this->valid($this->call(base64_encode($this->options['password'])));
-            }
-
-            // отправителя
-            $this->valid($this->call('MAIL FROM: '.$message->getFrom()));
-
-
-            // получателя
-            $this->valid($this->call('RCPT TO: '.$message->getTo()));
-
-
-            // готовимся к отправке данных
-            $this->call('DATA');
-
-            // Отправляем заголовок и само сообщение.
-            // Точка в самом конце означает конец сообщения
-            $this->valid($this->call($message->getHeaders()
-                ."\r\n\r\n".$message->getText()."\r\n."));
-
-        } catch (\Exception $e) {
-            $this->errno = $e->getCode();
-            $this->errstr = $e->getMessage();
+        } else {
+            $dialogue->call('HELO '.$_SERVER['HTTP_HOST'], true);
         }
 
+        if ($this->auth_username && $this->auth_password) {
+            // Запрос на авторизованный логин
+            $dialogue->call('AUTH LOGIN');
+            // Отправка имени пользователя
+            $dialogue->call(base64_encode($this->auth_username));
+            // Отправка пароля
+            $dialogue->call(base64_encode($this->auth_password), true);
+        }
+
+        $dialogue->call('MAIL FROM: '.$message->getFrom(), true);
+        $dialogue->call('RCPT TO: '.$message->getTo(), true);
+        $dialogue->call('DATA');
+
+        // Отправляем заголовок и само сообщение.
+        // Точка в самом конце означает конец сообщения
+        $data = $message->getHeaders()."\r\n\r\n".$message->getText()."\r\n.";
+        $dialogue->call($data, true);
+
         // Завершаем передачу данных
-        $reply =& $this->call('QUIT');
+        $result = $dialogue->call('QUIT');
 
         // Закрываем SMTP соединение
-        fclose($this->connect);
+        $dialogue->end();
 
-        return $this->errno == 0 && $this->isSuccess($reply);
+        return $result;
     }
 
     /**
      * Устанавливает максимальное время ожидания ответа от сервера
-     *
-     * @throws \InvalidArgumentException
      *
      * @param integer $timeout
      *
@@ -204,90 +143,22 @@ class Smtp implements SenderInterface
      */
     public function setTimeOut($timeout)
     {
-        if (!is_int($timeout) || $timeout <= 0 || $timeout > ini_get('max_execution_time')){
-            throw new \InvalidArgumentException('Incorrect maximum waiting time from the server.');
+        if ($timeout > 0 && $timeout < (int)ini_get('max_execution_time')){
+            $this->timeout = $timeout;
         }
-        $this->timeout = $timeout;
         return $this;
     }
 
     /**
      * Стартовать безопасное соединение
      *
+     * @param boolean $secure
+     *
      * @return \Sendmail\Sender\Smtp
      */
-    public function startSecure()
+    public function setSecure($secure = true)
     {
-        $this->secure = true;
+        $this->secure = $secure;
         return $this;
-    }
-
-    /**
-     * Отправляет серверу запрос и возвращает ответ
-     *
-     * @param string $call
-     *
-     * @return string
-     */
-    protected function &call($call)
-    {
-        fputs($this->connect, $call."\r\n");
-
-        $reply = fread($this->connect, 4096);
-        // Запись отладочной информации
-        $this->log .= $call."\r\n".$reply;
-
-        return $reply;
-    }
-
-    /**
-     * Проверяет, является ли ответ сервера успешным
-     * и в случае ошибки вызывает исключение
-     *
-     * @throws \Exception
-     *
-     * @param string $reply
-     */
-    protected function valid(&$reply)
-    {
-        if (!$this->isSuccess($reply)) {
-            list($code, $message) = $this->parse($reply);
-            throw new \Exception($message, $code);
-        }
-    }
-
-    /**
-     * Разбирает ответ на код ответа и текст сообщения возвращая их
-     *
-     * <code>
-     * [
-     *     <code>,
-     *     <message>
-     * ]
-     * </code>
-     *
-     * @param string $reply
-     *
-     * @return array
-     */
-    protected function parse(&$reply)
-    {
-        if (preg_match('/^(\d{3}).*?([-_ \.a-zA-Z]+)[\r|\n]/', $reply, $match)) {
-            return array(intval($match[1]), trim($match[2]));
-        }
-        return array(1, trim($reply));
-    }
-
-    /**
-     * Проверяет, является ли ответ сервера успешным
-     *
-     * @param string $reply
-     *
-     * @return boolean
-     */
-    protected function isSuccess(&$reply)
-    {
-        // код положительного ответа начинается с двойки
-        return $reply[0] == 2;
     }
 }

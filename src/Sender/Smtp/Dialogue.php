@@ -57,6 +57,9 @@ class Dialogue
             }
             throw new \Exception($errstr, $errno);
         }
+
+        // saving welcome message
+        $this->log = fgets($this->connect, 4096);
     }
 
     /**

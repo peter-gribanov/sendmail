@@ -99,7 +99,8 @@ class Facade
         // модуль SMTP соединения
         if ($options['scheme'] == 'smtp') {
             return new Smtp(
-                $options['host'].':'.$options['port'],
+                $options['host'],
+                $options['port'],
                 $options['user'],
                 $options['pass']
             );

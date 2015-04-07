@@ -13,7 +13,7 @@ namespace Sendmail\Sender;
 use Sendmail\Message;
 
 /**
- * Интерфейс отправителей сообщений
+ * Sender interface
  *
  * @package Sendmail
  * @author  Peter Gribanov <info@peter-gribanov.ru>
@@ -21,8 +21,7 @@ use Sendmail\Message;
 interface SenderInterface
 {
     /**
-     * Метод подготавливает письмо к отправке и отправляет его
-     * Возвращает true, если отправка прошла успешно
+     * Send E-mail message
      *
      * @param \Sendmail\Message $message
      *
