@@ -67,7 +67,7 @@ class Dialogue
      *
      * @throws \Exception
      *
-     * @param string $call
+     * @param string $request
      * @param boolean $verify
      *
      * @return boolean
