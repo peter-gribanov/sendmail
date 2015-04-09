@@ -6,16 +6,17 @@ Package for send mails.
 
 ### Example 1 - send mail from mail() function
 
-Отправка одного сообщения через PHP функцию [mail()](http://php.net/manual/en/book.mail.php)
+Send one message by the PHP function [mail()](http://php.net/manual/en/book.mail.php)
 
 ```php
+use Sendmail\Message;
 use Sendmail\Sender\Mail;
 
 $message = new Message();
 $message
 	->setTo('user@example.com')
-	->setSubject('Заголовок')
-	->setMessage('Текст сообщения');
+	->setSubject('Example subject')
+	->setMessage('Example message');
 $sender = new Mail();
 $sender->send($message);
 ```
@@ -31,29 +32,28 @@ use Sendmail\Sender\Smtp\Exception;
 $message1 = new Message();
 $message1
 	->setTo('user1@example.com')
-	->setSubject('Заголовок 1')
-	->setMessage('Текст сообщения 1')
+	->setSubject('Example subject 1')
+	->setMessage('Example message 1')
 	->setFrom('sender@example.com', 'Sender');
 $message2 = new Message();
 $message2
 	->setTo('user2@example.com')
-	->setSubject('Заголовок 2')
-	->setMessage('Текст сообщения 2')
+	->setSubject('Example subject 2')
+	->setMessage('Example message 2')
 	->setFrom('sender@example.com', 'Sender');
 
-// отправка сообщений в очереди через прямое соединенияе с SMTP сервером
+// sending messages to the queue via a direct connection to the SMTP server
 $queue = new Queue(new Smtp('example.com', 25, 'username', 'password'));
 $queue->add(message1)->add(message2);
 
 try {
-	// отправляем все сообщения в очереди
+	// send all messages
 	var_dump($queue->send());
 } catch (Exception $e) {
-	// вывод текста диалога с сервером
+	// SMTP dialogue
 	echo $e->getDialogue()->getLog();
 }
 
-// очищаем очередь
 $queue->clear();
 ```
 
@@ -68,27 +68,23 @@ use Sendmail\Sender\Mail;
 $message = new Message();
 $message
 	->setSubject('Example subject')
-	->setMessage('<b>Test message.<b><br />You can remove this message.')
-	// устанавливаем адрес отправителя
+	->setMessage('<b>Example message.<b><br />You can remove this message.')
+	// email of the sender
 	->setFrom('sender@example.com')
-	// отправлять письмо в формате HTML
+	// send email in HTML format
 	->inHTML();
 
-// инициализируем объект для отправки через PHP функцию mail()
 $queue = new Queue(new Mail());
-// добавляем в очередь письмо адресованое нескольким получателям
-$queue
-	->notify(
-		array(
-			'user1@example.com',
-			'user2@example.com',
-			'user3@example.com'
-		),
-		$message
-	);
+// add to queue a letter addressed to multiple recipients
+$queue->notify(
+	array(
+		'user1@example.com',
+		'user2@example.com',
+		'user3@example.com'
+	),
+	$message
+);
 
-// отправляет все сообщения в очереди
 $queue->send();
-// очищаем очередь
 $queue->clear();
 ```
