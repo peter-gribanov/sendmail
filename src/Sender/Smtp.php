@@ -13,7 +13,6 @@ namespace Sendmail\Sender;
 use Sendmail\Sender\SenderInterface;
 use Sendmail\Message;
 use Sendmail\Sender\Smtp\Dialogue;
-use Sendmail\Sender\Smtp\Exception;
 
 /**
  * SMTP/ESMTP sender RFC 5321
