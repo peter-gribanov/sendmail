@@ -1,5 +1,13 @@
 # sendmail
 
+
+[![Latest Stable Version](https://poser.pugx.org/gribanov/sendmail/v/stable.png)](https://packagist.org/packages/gribanov/sendmail)
+[![Latest Unstable Version](https://poser.pugx.org/gribanov/sendmail/v/unstable.png)](https://packagist.org/packages/gribanov/sendmail)
+[![Build Status](https://travis-ci.org/gribanov/sendmail.svg?branch=master)](https://travis-ci.org/gribanov/sendmail)
+[![Code Coverage](https://scrutinizer-ci.com/g/gribanov/sendmail/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/gribanov/sendmail/?branch=master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/0393f547-c429-47ef-8255-4607d6e40231/mini.png)](https://insight.sensiolabs.com/projects/0393f547-c429-47ef-8255-4607d6e40231)
+[![License](https://poser.pugx.org/gribanov/sendmail/license.png)](https://packagist.org/packages/gribanov/sendmail)
+
 Package for send mails.
 
 ## Examples
