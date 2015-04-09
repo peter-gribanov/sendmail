@@ -93,26 +93,24 @@ class Smtp implements SenderInterface
     {
         $dialogue = new Dialogue($this->server, $this->port, $this->timeout);
 
-        // SMTP-сессия установлена, можно отправлять запросы
+        // SMTP-session is established, can send requests
 
         // is ESMTP?
         if ($dialogue->call('EHLO '.$_SERVER['HTTP_HOST'])) {
-            // Если требуется, то открываем TLS соединение
+            // open the TLS connection if need
             if ($this->secure) {
                 $dialogue->call('STARTTLS');
-                // После старта TLS надо сказать еще раз EHLO
+                // after starting TLS need to say again EHLO
                 $dialogue->call('EHLO '.$_SERVER['HTTP_HOST'], true);
             }
         } else {
             $dialogue->call('HELO '.$_SERVER['HTTP_HOST'], true);
         }
 
+        // authorizing
         if ($this->auth_username && $this->auth_password) {
-            // Запрос на авторизованный логин
             $dialogue->call('AUTH LOGIN');
-            // Отправка имени пользователя
             $dialogue->call(base64_encode($this->auth_username));
-            // Отправка пароля
             $dialogue->call(base64_encode($this->auth_password), true);
         }
 
@@ -120,22 +118,22 @@ class Smtp implements SenderInterface
         $dialogue->call('RCPT TO: '.$message->getTo(), true);
         $dialogue->call('DATA');
 
-        // Отправляем заголовок и само сообщение.
-        // Точка в самом конце означает конец сообщения
-        $data = $message->getHeaders()."\r\n\r\n".$message->getText()."\r\n.";
-        $dialogue->call($data, true);
+        // point at the end means the end of the message
+        $dialogue->call(
+            $message->getHeaders()."\r\n\r\n".
+            $message->getText()."\r\n.",
+            true
+        );
 
-        // Завершаем передачу данных
+        // completes data transmission and close SMTP connect
         $result = $dialogue->call('QUIT');
-
-        // Закрываем SMTP соединение
         $dialogue->end();
 
         return $result;
     }
 
     /**
-     * Устанавливает максимальное время ожидания ответа от сервера
+     * Set timeout connecting to the server
      *
      * @param integer $timeout
      *
@@ -143,14 +141,14 @@ class Smtp implements SenderInterface
      */
     public function setTimeOut($timeout)
     {
-        if ($timeout > 0 && $timeout < (int)ini_get('max_execution_time')){
+        if ($timeout > 0) {
             $this->timeout = $timeout;
         }
         return $this;
     }
 
     /**
-     * Стартовать безопасное соединение
+     * Start secure connection
      *
      * @param boolean $secure
      *
