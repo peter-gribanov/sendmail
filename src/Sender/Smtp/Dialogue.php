@@ -41,7 +41,7 @@ class Dialogue
      * @param integer $port
      * @param integer $timeout
      */
-    protected function __construct($server, $port, $timeout = -1)
+    public function __construct($server, $port, $timeout = -1)
     {
         $errno = 0;
         $errstr = '';
