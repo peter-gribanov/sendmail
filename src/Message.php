@@ -303,10 +303,10 @@ class Message
         $type = 'Content-type: text/'.($this->in_html ? 'html' : 'plain')
             .'; charset="'.$this->charset.'"'.self::EOL;
 
+        $headers = '';
         if ($this->subject) {
-            $headers = $type;
-            $subject = $this->encode($this->subject);
-            $headers .= 'Subject: '.$subject.self::EOL;
+            $headers .= $type;
+            $headers .= 'Subject: '.$this->encode($this->subject).self::EOL;
         }
         $headers .= 'MIME-Version: 1.0'.self::EOL;
         $headers .= $type;
