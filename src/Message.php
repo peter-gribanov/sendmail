@@ -74,16 +74,6 @@ class Message
      */
     protected $in_html = false;
 
-
-    /**
-     * Construct
-     */
-    public function __construct()
-    {
-        $this->from = '<admin@'.$_SERVER['HTTP_HOST'].'>';
-        $this->from_name = 'Administration';
-    }
-
     /**
      * Set message charset
      *
@@ -211,7 +201,7 @@ class Message
     {
         $from_name = '';
         if ($this->from_name) {
-            $from_name = '=?'.$this->charset.'?B?'.base64_encode($this->from_name).'?=';
+            $from_name = '=?'.$this->charset.'?B?'.base64_encode($this->from_name).'?= ';
         }
         $subject = '=?'.$this->charset.'?B?'.base64_encode($this->subject).'?=';
         $type = 'text/'.($this->in_html ? 'html' : 'plain');
@@ -221,7 +211,7 @@ class Message
             'MIME-Version: 1.0'."\r\n".
             'Content-type: '.$type.'; charset="'.$this->charset."\"\r\n".
             'To: '.$this->to."\r\n".
-            'From: '.$from_name.' <'.$this->from.'>'."\r\n".
-            'Reply-To: '.$from_name.' <'.$this->from.'>'."\r\n";
+            'From: '.$from_name.'<'.$this->from.'>'."\r\n".
+            'Reply-To: '.$from_name.'<'.$this->from.'>'."\r\n";
     }
 }
