@@ -35,7 +35,6 @@ class Queue implements \IteratorAggregate, \Countable
      */
     protected $sender;
 
-
     /**
      * Construct
      *
@@ -87,8 +86,18 @@ class Queue implements \IteratorAggregate, \Countable
      */
     public function add(Message $message)
     {
-        $this->messages[] = $message;
+        $this->messages[] = clone $message;
         return $this;
+    }
+
+    /**
+     * Get sender
+     *
+     * @return \Sendmail\Sender\SenderInterface
+     */
+    public function getSender()
+    {
+        return $this->sender;
     }
 
     /**
@@ -101,20 +110,11 @@ class Queue implements \IteratorAggregate, \Countable
      */
     public function notify(array $recipients, Message $message)
     {
+        $message = clone $message;
         foreach ($recipients as $recipient) {
-            $this->messages[] = $message->setTo($recipient);
+            $this->add($message->setTo($recipient));
         }
         return $this;
-    }
-
-    /**
-     * Get sender
-     *
-     * @return \Sendmail\Sender\SenderInterface
-     */
-    public function getSender()
-    {
-        return $this->sender;
     }
 
     /**
