@@ -42,6 +42,7 @@ $message1
 	->setTo('user1@example.com')
 	->setSubject('Example subject 1')
 	->setMessage('Example message 1')
+	// email of the sender
 	->setFrom('sender@example.com')
 	->setFromName('Sender');
 
@@ -79,7 +80,7 @@ use Sendmail\Sender\Mail;
 $message = new Message();
 $message
 	->setSubject('Example subject')
-	->setMessage('<b>Example message.<b><br />You can remove this message.')
+	->setMessage('<h1>Example message.<h1><p>You can remove this message.</p>')
 	// email of the sender
 	->setFrom('sender@example.com')
 	// send email in HTML format
