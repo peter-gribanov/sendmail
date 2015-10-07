@@ -22,27 +22,6 @@ use Sendmail\Message;
 class Queue implements \IteratorAggregate, \Countable
 {
     /**
-     * The object has not been created
-     *
-     * @var integer
-     */
-    const STATUS_NOT_INIT = 0;
-
-    /**
-     * Created and ready to go
-     *
-     * @var integer
-     */
-    const STATUS_READY = 1;
-
-    /**
-     * Sends a message
-     *
-     * @var integer
-     */
-    const STATUS_SENDS = 2;
-
-    /**
      * List messages
      *
      * @var array
@@ -72,7 +51,6 @@ class Queue implements \IteratorAggregate, \Countable
     public function __construct(SenderInterface $sender)
     {
         $this->sender = $sender;
-        $this->status = self::STATUS_READY;
     }
 
     /**
@@ -154,14 +132,7 @@ class Queue implements \IteratorAggregate, \Countable
     public function send()
     {
         foreach ($this as $message) {
-            // wait the queue is released
-            while ($this->status != self::STATUS_READY) {}
-
-            $this->status = self::STATUS_SENDS;
-            $result = $this->sender->send($message);
-            $this->status = self::STATUS_READY;
-
-            if (!$result) {
+            if (!$this->sender->send($message)) {
                 return false;
             }
         }
