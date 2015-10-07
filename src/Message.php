@@ -109,17 +109,25 @@ class Message
     }
 
     /**
+     * Get message charset
+     *
+     * @return string
+     */
+    public function getCharset()
+    {
+        return $this->charset;
+    }
+
+    /**
      * Set E-mail from
      *
      * @param string $from
-     * @param string $name
      *
      * @return \Sendmail\Message
      */
-    public function setFrom($from, $name = '')
+    public function setFrom($from)
     {
         $this->from = $from;
-        $this->from_name = $name ?: $this->from_name;
         return $this;
     }
 
@@ -163,10 +171,9 @@ class Message
      *
      * @return \Sendmail\Message
      */
-    public function setReplyTo($to, $name = '')
+    public function setReplyTo($to)
     {
         $this->reply_to = $to;
-        $this->reply_to_name = $name ?: $this->reply_to_name;
         return $this;
     }
 
