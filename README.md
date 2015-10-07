@@ -44,17 +44,18 @@ $message1
 	->setMessage('Example message 1')
 	->setFrom('sender@example.com')
 	->setFromName('Sender');
-$message2 = new Message();
+
+$message2 = clone $message1;
 $message2
 	->setTo('user2@example.com')
 	->setSubject('Example subject 2')
-	->setMessage('Example message 2')
-	->setFrom('sender@example.com')
-	->setFromName('Sender');
+	->setMessage('Example message 2');
 
 // sending messages to the queue via a direct connection to the SMTP server
 $queue = new Queue(new Smtp('example.com', 25, 'username', 'password'));
-$queue->add(message1)->add(message2);
+$queue
+	->add(message1)
+	->add(message2);
 
 try {
 	// send all messages
