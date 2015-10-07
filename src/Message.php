@@ -310,20 +310,16 @@ class Message
         }
         $headers .= 'MIME-Version: 1.0'.self::EOL;
         $headers .= $type;
-        $headers .= 'To: '.$this->to.self::EOL;
+        $headers .= 'To: '.$this->foramatName($this->to, '').self::EOL;
 
-        $from_name = '';
-        if ($this->from_name) {
-            $from_name = $this->encode($this->from_name).' ';
-        }
-        $headers .= 'From: '.$from_name.'<'.$this->from.'>'.self::EOL;
+        $headers .= 'From: '.$this->foramatName($this->from, $this->from_name)
+            .self::EOL;
 
         if ($this->reply_to) {
-            $reply_to_name = $from_name;
-            if ($this->reply_to_name) {
-                $reply_to_name = $this->encode($this->reply_to_name).' ';
-            }
-            $headers .= 'Reply-To: '.$reply_to_name.'<'.$this->reply_to.'>'.self::EOL;
+            $headers .= 'Reply-To: '.$this->foramatName(
+                $this->reply_to,
+                $this->reply_to_name ?: $this->from_name
+            ).self::EOL;
         }
 
         return $headers;
@@ -339,5 +335,21 @@ class Message
     protected function encode($string)
     {
         return '=?'.$this->charset.'?B?'.base64_encode($string).'?=';
+    }
+
+    /**
+     * Foramat name
+     *
+     * @param string $email
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function foramatName($email, $name)
+    {
+        if (!$name) {
+            return $email;
+        }
+        return $this->encode($name).' <'.$email.'>';
     }
 }
