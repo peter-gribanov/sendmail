@@ -300,8 +300,9 @@ class Message
      */
     public function getHeaders()
     {
-        $type = 'text/'.($this->in_html ? 'html' : 'plain');
-        $type = 'Content-type: '.$type.'; charset="'.$this->charset.'"'.self::EOL;
+        $type = 'Content-type: text/'.($this->in_html ? 'html' : 'plain')
+            .'; charset="'.$this->charset.'"'.self::EOL;
+
         if ($this->subject) {
             $headers = $type;
             $subject = $this->encode($this->subject);
