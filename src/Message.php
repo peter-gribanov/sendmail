@@ -347,9 +347,6 @@ class Message
      */
     protected function foramatName($email, $name)
     {
-        if (!$name) {
-            return $email;
-        }
-        return $this->encode($name).' <'.$email.'>';
+        return $name ? $this->encode($name).' <'.$email.'>' : $email;
     }
 }
