@@ -47,6 +47,20 @@ class Message
     protected $from_name = '';
 
     /**
+     * Reply to
+     *
+     * @var string
+     */
+    protected $reply_to = '';
+
+    /**
+     * Reply to name
+     *
+     * @var string
+     */
+    protected $reply_to_name = '';
+
+    /**
      * E-mail to
      *
      * @var string
@@ -89,16 +103,16 @@ class Message
 
     /**
      * Set E-mail from
-     * 
+     *
      * @param string $from
-     * @param string $from_name
+     * @param string $name
      *
      * @return \Sendmail\Message
      */
-    public function setFrom($from, $from_name = '')
+    public function setFrom($from, $name = '')
     {
         $this->from = $from;
-        $this->from_name = $from_name;
+        $this->from_name = $name ?: $this->from_name;
         return $this;
     }
 
@@ -113,6 +127,19 @@ class Message
     }
 
     /**
+     * Set E-mail from name
+     *
+     * @param string $name
+     *
+     * @return \Sendmail\Message
+     */
+    public function setFromName($name)
+    {
+        $this->from_name = $name;
+        return $this;
+    }
+
+    /**
      * Get E-mail from name
      *
      * @return string
@@ -120,6 +147,53 @@ class Message
     public function getFromName()
     {
         return $this->from_name;
+    }
+
+    /**
+     * Set reply to
+     *
+     * @param string $to
+     *
+     * @return \Sendmail\Message
+     */
+    public function setReplyTo($to, $name = '')
+    {
+        $this->reply_to = $to;
+        $this->reply_to_name = $name ?: $this->reply_to_name;
+        return $this;
+    }
+
+    /**
+     * Get reply to
+     *
+     * @return string
+     */
+    public function getReplyTo()
+    {
+        return $this->reply_to;
+    }
+
+    /**
+     * Set reply to name
+     *
+     * @param string $name
+     *
+     * @return \Sendmail\Message
+     */
+    public function setReplyToName($name)
+    {
+        $this->reply_to_name = $name;
+        return $this;
+    }
+
+    /**
+     * Get reply to name
+     *
+     * @return string
+     */
+    public function getReplyToName()
+    {
+        return $this->reply_to_name;
     }
 
     /**
@@ -219,9 +293,14 @@ class Message
      */
     public function getHeaders()
     {
+        $reply_to = $this->reply_to ?: $this->from;
         $from_name = '';
         if ($this->from_name) {
             $from_name = '=?'.$this->charset.'?B?'.base64_encode($this->from_name).'?= ';
+        }
+        $reply_to_name = $from_name;
+        if ($this->reply_to_name) {
+            $$reply_to_name = '=?'.$this->charset.'?B?'.base64_encode($this->reply_to_name).'?= ';
         }
         $subject = '=?'.$this->charset.'?B?'.base64_encode($this->subject).'?=';
         $type = 'text/'.($this->in_html ? 'html' : 'plain');
@@ -232,6 +311,6 @@ class Message
             'Content-type: '.$type.'; charset="'.$this->charset."\"\r\n".
             'To: '.$this->to."\r\n".
             'From: '.$from_name.'<'.$this->from.'>'."\r\n".
-            'Reply-To: '.$from_name.'<'.$this->from.'>'."\r\n";
+            'Reply-To: '.$reply_to_name.'<'.$reply_to.'>'."\r\n";
     }
 }
