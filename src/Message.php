@@ -26,6 +26,13 @@ class Message
     const DEFAULT_CHARSET = 'utf-8';
 
     /**
+     * Headers end of line
+     *
+     * @var string
+     */
+    const EOL = "\r\n";
+
+    /**
      * Message charset
      *
      * @var string
@@ -294,29 +301,42 @@ class Message
     public function getHeaders()
     {
         $type = 'text/'.($this->in_html ? 'html' : 'plain');
+        $type = 'Content-type: '.$type.'; charset="'.$this->charset.'"'.self::EOL;
         if ($this->subject) {
-            $headers = 'Content-type: '.$type.'; charset="'.$this->charset."\"\r\n";
-            $subject = '=?'.$this->charset.'?B?'.base64_encode($this->subject).'?=';
-            $headers .= 'Subject: '.$subject."\r\n";
+            $headers = $type;
+            $subject = $this->encode($this->subject);
+            $headers .= 'Subject: '.$subject.self::EOL;
         }
-        $headers .= 'MIME-Version: 1.0'."\r\n";
-        $headers .= 'Content-type: '.$type.'; charset="'.$this->charset."\"\r\n";
-        $headers .= 'To: '.$this->to."\r\n";
+        $headers .= 'MIME-Version: 1.0'.self::EOL;
+        $headers .= $type;
+        $headers .= 'To: '.$this->to.self::EOL;
 
         $from_name = '';
         if ($this->from_name) {
-            $from_name = '=?'.$this->charset.'?B?'.base64_encode($this->from_name).'?= ';
+            $from_name = $this->encode($this->from_name).' ';
         }
-        $headers .= 'From: '.$from_name.'<'.$this->from.'>'."\r\n";
+        $headers .= 'From: '.$from_name.'<'.$this->from.'>'.self::EOL;
 
         if ($this->reply_to) {
             $reply_to_name = $from_name;
             if ($this->reply_to_name) {
-                $reply_to_name = '=?'.$this->charset.'?B?'.base64_encode($this->reply_to_name).'?= ';
+                $reply_to_name = $this->encode($this->reply_to_name).' ';
             }
-            $headers .= 'Reply-To: '.$reply_to_name.'<'.$this->reply_to.'>'."\r\n";
+            $headers .= 'Reply-To: '.$reply_to_name.'<'.$this->reply_to.'>'.self::EOL;
         }
 
         return $headers;
+    }
+
+    /**
+     * Encode string
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    protected function encode($string)
+    {
+        return '=?'.$this->charset.'?B?'.base64_encode($string).'?=';
     }
 }
