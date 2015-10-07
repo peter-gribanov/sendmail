@@ -113,6 +113,16 @@ class Message
     }
 
     /**
+     * Get E-mail from name
+     *
+     * @return string
+     */
+    public function getFromName()
+    {
+        return $this->from_name;
+    }
+
+    /**
      * Set E-mail to
      *
      * @param string $to
@@ -190,6 +200,16 @@ class Message
     {
         $this->in_html = true;
         return $this;
+    }
+
+    /**
+     * Is send E-mail in HTML format
+     *
+     * @return boolean
+     */
+    public function isHTML()
+    {
+        return $this->in_html;
     }
 
     /**
