@@ -29,13 +29,6 @@ class Queue implements \IteratorAggregate, \Countable
     protected $messages = array();
 
     /**
-     * Queue status
-     *
-     * @var integer
-     */
-    protected $status = self::STATUS_NOT_INIT;
-
-    /**
      * Mail sender
      *
      * @var \Sendmail\Sender\SenderInterface
