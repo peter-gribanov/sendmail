@@ -293,24 +293,30 @@ class Message
      */
     public function getHeaders()
     {
-        $reply_to = $this->reply_to ?: $this->from;
+        $type = 'text/'.($this->in_html ? 'html' : 'plain');
+        if ($this->subject) {
+            $headers = 'Content-type: '.$type.'; charset="'.$this->charset."\"\r\n";
+            $subject = '=?'.$this->charset.'?B?'.base64_encode($this->subject).'?=';
+            $headers .= 'Subject: '.$subject."\r\n";
+        }
+        $headers .= 'MIME-Version: 1.0'."\r\n";
+        $headers .= 'Content-type: '.$type.'; charset="'.$this->charset."\"\r\n";
+        $headers .= 'To: '.$this->to."\r\n";
+
         $from_name = '';
         if ($this->from_name) {
             $from_name = '=?'.$this->charset.'?B?'.base64_encode($this->from_name).'?= ';
         }
-        $reply_to_name = $from_name;
-        if ($this->reply_to_name) {
-            $$reply_to_name = '=?'.$this->charset.'?B?'.base64_encode($this->reply_to_name).'?= ';
-        }
-        $subject = '=?'.$this->charset.'?B?'.base64_encode($this->subject).'?=';
-        $type = 'text/'.($this->in_html ? 'html' : 'plain');
+        $headers .= 'From: '.$from_name.'<'.$this->from.'>'."\r\n";
 
-        return 'Content-type: '.$type.'; charset="'.$this->charset."\"\r\n".
-            'Subject: '.$subject."\r\n".
-            'MIME-Version: 1.0'."\r\n".
-            'Content-type: '.$type.'; charset="'.$this->charset."\"\r\n".
-            'To: '.$this->to."\r\n".
-            'From: '.$from_name.'<'.$this->from.'>'."\r\n".
-            'Reply-To: '.$reply_to_name.'<'.$reply_to.'>'."\r\n";
+        if ($this->reply_to) {
+            $reply_to_name = $from_name;
+            if ($this->reply_to_name) {
+                $reply_to_name = '=?'.$this->charset.'?B?'.base64_encode($this->reply_to_name).'?= ';
+            }
+            $headers .= 'Reply-To: '.$reply_to_name.'<'.$this->reply_to.'>'."\r\n";
+        }
+
+        return $headers;
     }
 }
