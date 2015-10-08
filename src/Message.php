@@ -10,6 +10,7 @@
 
 namespace Sendmail;
 
+use Sendmail\Message\Headers;
 /**
  * Message
  *
@@ -19,67 +20,11 @@ namespace Sendmail;
 class Message
 {
     /**
-     * Default charset
-     *
-     * @var string
-     */
-    const DEFAULT_CHARSET = 'utf-8';
-
-    /**
-     * Headers end of line
-     *
-     * @var string
-     */
-    const EOL = "\r\n";
-
-    /**
      * Message charset
      *
      * @var string
      */
-    protected $charset = self::DEFAULT_CHARSET;
-
-    /**
-     * E-Mail from
-     *
-     * @var string
-     */
-    protected $from = '';
-
-    /**
-     * E-Mail from name
-     *
-     * @var string
-     */
-    protected $from_name = '';
-
-    /**
-     * Reply to
-     *
-     * @var string
-     */
-    protected $reply_to = '';
-
-    /**
-     * Reply to name
-     *
-     * @var string
-     */
-    protected $reply_to_name = '';
-
-    /**
-     * E-mail to
-     *
-     * @var string
-     */
-    protected $to = '';
-
-    /**
-     * Subject
-     *
-     * @var string
-     */
-    protected $subject = '';
+    protected $charset = Headers::DEFAULT_CHARSET;
 
     /**
      * Message text
@@ -96,6 +41,23 @@ class Message
     protected $in_html = false;
 
     /**
+     * Headers
+     *
+     * @var \Sendmail\Message\Headers
+     */
+    protected $headers;
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        $this->headers = new Headers();
+        $this->setCharset($this->charset)->setSubject('');
+        $this->headers->set('MIME-Version', '1.0');
+    }
+
+    /**
      * Set message charset
      *
      * @param string $charset
@@ -105,109 +67,50 @@ class Message
     public function setCharset($charset)
     {
         $this->charset = $charset;
-        return $this;
+        $this->headers->setCharset($charset);
+        return $this->setContentType();
     }
 
     /**
-     * Get message charset
+     * Set content type
      *
-     * @return string
+     * @return \Sendmail\Message
      */
-    public function getCharset()
+    protected function setContentType()
     {
-        return $this->charset;
+        $this->headers->set(
+            'Content-type',
+            'text/'.($this->in_html ? 'html' : 'plain').'; charset="'.$this->charset.'"'
+        );
+        return $this;
     }
 
     /**
      * Set E-mail from
      *
      * @param string $from
-     *
-     * @return \Sendmail\Message
-     */
-    public function setFrom($from)
-    {
-        $this->from = $from;
-        return $this;
-    }
-
-    /**
-     * Get E-mail from
-     *
-     * @return string
-     */
-    public function getFrom()
-    {
-        return $this->from;
-    }
-
-    /**
-     * Set E-mail from name
-     *
      * @param string $name
      *
      * @return \Sendmail\Message
      */
-    public function setFromName($name)
+    public function setFrom($from, $name)
     {
-        $this->from_name = $name;
+        $this->headers->set('From', $this->headers->foramatName($from, $name));
         return $this;
-    }
-
-    /**
-     * Get E-mail from name
-     *
-     * @return string
-     */
-    public function getFromName()
-    {
-        return $this->from_name;
     }
 
     /**
      * Set reply to
      *
      * @param string $to
-     *
-     * @return \Sendmail\Message
-     */
-    public function setReplyTo($to)
-    {
-        $this->reply_to = $to;
-        return $this;
-    }
-
-    /**
-     * Get reply to
-     *
-     * @return string
-     */
-    public function getReplyTo()
-    {
-        return $this->reply_to;
-    }
-
-    /**
-     * Set reply to name
-     *
      * @param string $name
      *
      * @return \Sendmail\Message
      */
-    public function setReplyToName($name)
+    public function setReplyTo($to, $name)
     {
-        $this->reply_to_name = $name;
+        $this->headers->set('Reply-To', $this->headers->foramatName($to, $name));
         return $this;
-    }
-
-    /**
-     * Get reply to name
-     *
-     * @return string
-     */
-    public function getReplyToName()
-    {
-        return $this->reply_to_name;
     }
 
     /**
@@ -219,18 +122,8 @@ class Message
      */
     public function setTo($to)
     {
-        $this->to = $to;
+        $this->headers->set('To', $to);
         return $this;
-    }
-
-    /**
-     * Get E-mail to
-     *
-     * @return string
-     */
-    public function getTo()
-    {
-        return $this->to;
     }
 
     /**
@@ -242,18 +135,8 @@ class Message
      */
     public function setSubject($subject)
     {
-        $this->subject = $subject;
+        $this->headers->set('Subject', $subject, true);
         return $this;
-    }
-
-    /**
-     * Get message subject
-     *
-     * @return string
-     */
-    public function getSubject()
-    {
-        return $this->subject;
     }
 
     /**
@@ -287,17 +170,7 @@ class Message
     public function inHTML()
     {
         $this->in_html = true;
-        return $this;
-    }
-
-    /**
-     * Is send E-mail in HTML format
-     *
-     * @return boolean
-     */
-    public function isHTML()
-    {
-        return $this->in_html;
+        return $this->setContentType();
     }
 
     /**
@@ -307,53 +180,14 @@ class Message
      */
     public function getHeaders()
     {
-        $type = 'Content-type: text/'.($this->in_html ? 'html' : 'plain')
-            .'; charset="'.$this->charset.'"'.self::EOL;
-
-        $headers = '';
-        if ($this->subject) {
-            $headers .= $type;
-            $headers .= 'Subject: '.$this->encode($this->subject).self::EOL;
-        }
-        $headers .= 'MIME-Version: 1.0'.self::EOL;
-        $headers .= $type;
-        $headers .= 'To: '.$this->foramatName($this->to, '').self::EOL;
-
-        $headers .= 'From: '.$this->foramatName($this->from, $this->from_name)
-            .self::EOL;
-
-        if ($this->reply_to) {
-            $headers .= 'Reply-To: '.$this->foramatName(
-                $this->reply_to,
-                $this->reply_to_name ?: $this->from_name
-            ).self::EOL;
-        }
-
-        return $headers;
+        return $this->headers->toString();
     }
 
     /**
-     * Encode string
-     *
-     * @param string $string
-     *
-     * @return string
+     * Clone
      */
-    protected function encode($string)
+    public function __clone()
     {
-        return '=?'.$this->charset.'?B?'.base64_encode($string).'?=';
-    }
-
-    /**
-     * Foramat name
-     *
-     * @param string $email
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function foramatName($email, $name)
-    {
-        return $name ? $this->encode($name).' <'.$email.'>' : $email;
+        $this->headers = clone $this->headers;
     }
 }

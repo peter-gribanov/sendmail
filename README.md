@@ -43,8 +43,7 @@ $message1
 	->setSubject('Example subject 1')
 	->setMessage('Example message 1')
 	// email of the sender
-	->setFrom('sender@example.com')
-	->setFromName('Sender');
+	->setFrom('sender@example.com', 'Sender');
 
 $message2 = clone $message1;
 $message2
