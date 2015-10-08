@@ -35,8 +35,8 @@ class Exception extends \Exception
         $this->dialogue = $dialogue;
 
         $response = explode("\n", $dialogue->getLog());
-        $response = array_pop($response);
-        if (preg_match('/^(\d{3})([^\r\n]+)/', $response, $match)) {
+        $response = array_shift($response);
+        if (preg_match('/^(\d{3})(.+)/', $response, $match)) {
             parent::__construct(trim($match[2]), (int)$match[1]);
         } else {
             parent::__construct(trim($response), 500);
