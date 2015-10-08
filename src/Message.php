@@ -93,7 +93,7 @@ class Message
      *
      * @return \Sendmail\Message
      */
-    public function setFrom($from, $name)
+    public function setFrom($from, $name = '')
     {
         $this->headers->set('From', $this->headers->foramatName($from, $name));
         return $this;
@@ -107,7 +107,7 @@ class Message
      *
      * @return \Sendmail\Message
      */
-    public function setReplyTo($to, $name)
+    public function setReplyTo($to, $name = '')
     {
         $this->headers->set('Reply-To', $this->headers->foramatName($to, $name));
         return $this;

@@ -8,12 +8,13 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Sendmail\Test;
+namespace Sendmail\Tests;
 
 use Sendmail\Message;
+use Sendmail\Message\Headers;
 
 /**
- * @package Sendmail\Test
+ * @package Sendmail\Tests
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class MessageTest extends \PHPUnit_Framework_TestCase
@@ -26,110 +27,108 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     protected $message;
 
     /**
+     * Headers
+     *
+     * @var \Sendmail\Message\Headers
+     */
+    protected $headers;
+
+    /**
+     * Example email
+     *
+     * @var string
+     */
+    protected $email = 'foo@example.com';
+
+    /**
      * (non-PHPdoc)
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
     {
         $this->message = new Message();
+        $this->headers = new Headers();
+        $this->headers
+            ->set('Content-type', 'text/plain; charset="'.Headers::DEFAULT_CHARSET.'"')
+            ->set('Subject', '', true)
+            ->set('MIME-Version', '1.0');
     }
 
-    public function testCharset()
+    public function testConstruct()
+    {
+        $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
+    }
+
+    public function testSetCharset()
     {
         $charset = 'koi8-r';
-        $this->assertEquals(Message::DEFAULT_CHARSET, $this->message->getCharset());
         $this->assertEquals($this->message, $this->message->setCharset($charset));
-        $this->assertEquals($charset, $this->message->getCharset());
+        $this->headers->set('Content-type', 'text/plain; charset="'.$charset.'"');
+        $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
-    public function testFromEmpty()
+    public function testSetFrom()
     {
-        $this->assertEmpty($this->message->getFrom());
-    }
-
-    public function testFrom()
-    {
-        $from = 'foo@example.com';
-        $this->assertEquals($this->message, $this->message->setFrom($from));
-        $this->assertEquals($from, $this->message->getFrom());
-    }
-
-    public function testFromNameEmpty()
-    {
-        $this->assertEmpty($this->message->getFromName());
+        $this->assertEquals($this->message, $this->message->setFrom($this->email));
+        $this->headers->set('From', $this->email);
+        $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
     public function testSetFromName()
     {
-        $from_name = 'bar';
-        $this->assertEquals($this->message, $this->message->setFromName($from_name));
-        $this->assertEquals($from_name, $this->message->getFromName());
+        $this->assertEquals($this->message, $this->message->setFrom($this->email, 'foo'));
+        $this->headers->set('From', $this->headers->foramatName($this->email, 'foo'));
+        $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
-    public function testReplyToEmpty()
+    public function testSetReplyTo()
     {
-        $this->assertEmpty($this->message->getReplyTo());
-    }
-
-    public function testReplyTo()
-    {
-        $to = 'foo@example.com';
-        $this->assertEquals($this->message, $this->message->setReplyTo($to));
-        $this->assertEquals($to, $this->message->getReplyTo());
-    }
-
-    public function testReplyToNameEmpty()
-    {
-        $this->assertEmpty($this->message->getReplyToName());
+        $this->assertEquals($this->message, $this->message->setReplyTo($this->email));
+        $this->headers->set('Reply-To', $this->email);
+        $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
     public function testSetReplyToName()
     {
-        $to_name = 'bar';
-        $this->assertEquals($this->message, $this->message->setReplyToName($to_name));
-        $this->assertEquals($to_name, $this->message->getReplyToName());
+        $this->assertEquals($this->message, $this->message->setReplyTo($this->email, 'foo'));
+        $this->headers->set('Reply-To', $this->headers->foramatName($this->email, 'foo'));
+        $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
-    public function testToEmpty()
+    public function testSetTo()
     {
-        $this->assertEmpty($this->message->getTo());
+        $this->assertEquals($this->message, $this->message->setTo($this->email));
+        $this->headers->set('To', $this->email);
+        $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
-    public function testTo()
+    public function testSetSubject()
     {
-        $to = 'foo@example.com';
-        $this->assertEquals($this->message, $this->message->setTo($to));
-        $this->assertEquals($to, $this->message->getTo());
-    }
-
-    public function testToSubject()
-    {
-        $this->assertEmpty($this->message->getSubject());
-    }
-
-    public function testSubject()
-    {
-        $subject = 'Example';
+        $subject = 'Example message';
         $this->assertEquals($this->message, $this->message->setSubject($subject));
-        $this->assertEquals($subject, $this->message->getSubject());
-    }
-
-    public function testToText()
-    {
-        $this->assertEmpty($this->message->getText());
+        $this->headers->set('Subject', $subject, true);
+        $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
     public function testText()
     {
-        $text = 'Example';
+        $text = 'Example message';
         $this->assertEquals($this->message, $this->message->setText($text));
         $this->assertEquals($text, $this->message->getText());
     }
 
-    public function testHTML()
+    public function testInHtml()
     {
-        $this->assertFalse($this->message->isHTML());
         $this->assertEquals($this->message, $this->message->inHTML());
-        $this->assertTrue($this->message->isHTML());
+        $this->headers->set('Content-type', 'text/html; charset="'.Headers::DEFAULT_CHARSET.'"');
+        $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
+    }
+
+    public function testClone()
+    {
+        $this->message->setFrom($this->email);
+        $new_message = clone $this->message;
+        $new_message->setFrom('bar@example.com');
+        $this->assertNotEquals($this->message->getHeaders(), $new_message->getHeaders());
     }
 }
