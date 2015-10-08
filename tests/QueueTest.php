@@ -8,26 +8,64 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Sendmail\Test;
+namespace Sendmail\Tests;
 
 use Sendmail\Queue;
 use Sendmail\Message;
+use Sendmail\Message\Headers;
 
 /**
- * @package Sendmail\Test
+ * @package Sendmail\Tests
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class QueueTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Sender
+     *
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $sender;
+
+    /**
+     * Queue
+     *
+     * @var \Sendmail\Queue
+     */
     protected $queue;
 
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
     protected function setUp()
     {
         $this->sender = $this->getMock('\Sendmail\Sender\SenderInterface');
         $this->queue = new Queue($this->sender);
     }
 
+    /**
+     * Get message mock object
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMessage()
+    {
+        $message = $this
+            ->getMockBuilder('\Sendmail\Message')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $message
+            ->expects($this->any())
+            ->method('__clone');
+        return $message;
+    }
+
+    /**
+     * Get messages
+     *
+     * @return array
+     */
     public function getMessages()
     {
         return array(
@@ -36,21 +74,21 @@ class QueueTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    $this->getMock('\Sendmail\Message')
+                    new Message()
                 )
             ),
             array(
                 array(
-                    $this->getMock('\Sendmail\Message'),
-                    $this->getMock('\Sendmail\Message')
+                    new Message(),
+                    new Message()
                 )
             ),
             array(
                 array(
-                    $this->getMock('\Sendmail\Message'),
-                    $this->getMock('\Sendmail\Message'),
-                    $this->getMock('\Sendmail\Message'),
-                    $this->getMock('\Sendmail\Message')
+                    new Message(),
+                    new Message(),
+                    new Message(),
+                    new Message()
                 )
             )
         );
@@ -76,7 +114,20 @@ class QueueTest extends \PHPUnit_Framework_TestCase
         // clear queue
         $this->assertEquals($this->queue, $this->queue->clear());
         $this->assertEquals(0, count($this->queue));
-        
+    }
+
+    public function testAddClone()
+    {
+        $message = new Message();
+        $message->setTo('foo@example.com');
+
+        $this->assertEquals($this->queue, $this->queue->add($message));
+
+        /* @var $actual \Sendmail\Message */
+        $actual = $this->queue->getIterator()->current();
+        $actual->setTo('bar@@example.com');
+
+        $this->assertNotEquals($message->getHeaders(), $actual->getHeaders());
     }
 
     public function testGetSender()
@@ -155,12 +206,15 @@ class QueueTest extends \PHPUnit_Framework_TestCase
             $this->queue->add($message->setTo($to));
         }
         $this->assertEquals($this->queue, $this->queue->notify($recipients, $message));
+
         // check list messages
         $this->assertEquals(count($recipients)+count($base), $this->queue->count());
         $expected = array_merge($base, $recipients);
+        $expected_message = new Message();
         foreach ($this->queue as $key => $message) {
             /* @var $message \Sendmail\Message */
-            $this->assertEquals($expected[$key], $message->getTo());
+            $expected_message->setTo($expected[$key]);
+            $this->assertEquals($expected_message->getHeaders(), $message->getHeaders());
         }
     }
 
@@ -183,7 +237,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
 
     public function testSendFail()
     {
-        $message = $this->getMock('\Sendmail\Message');
+        $message = new Message();
         $this->queue->add($message);
         $this->sender
             ->expects($this->once())
