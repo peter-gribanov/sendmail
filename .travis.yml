@@ -21,6 +21,14 @@ install:
     - composer self-update
     - composer --version
     - composer install --prefer-dist
+    - git clone --depth=1 git://github.com/zenovich/runkit.git
+    - cd runkit
+    - phpize
+    - ./configure
+    - make
+    - make install
+    - cd ../
+    - phpenv config-add tests/travis.runkit.ini
 
 script:
     - phpunit --verbose --coverage-clover=coverage.clover
