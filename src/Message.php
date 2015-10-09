@@ -151,6 +151,7 @@ class Message
      */
     public function setTo($to)
     {
+        $this->to = $to;
         $this->headers->set('To', $to);
         return $this;
     }
