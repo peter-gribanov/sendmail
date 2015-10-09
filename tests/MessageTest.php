@@ -64,6 +64,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
         $charset = 'koi8-r';
         $this->assertEquals($this->message, $this->message->setCharset($charset));
         $this->headers->set('Content-type', 'text/plain; charset="'.$charset.'"');
+        $this->assertEquals($charset, $this->message->getCharset());
         $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
@@ -71,6 +72,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->message, $this->message->setFrom($this->email));
         $this->headers->set('From', $this->email);
+        $this->assertEquals($this->email, $this->message->getFrom());
         $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
@@ -99,6 +101,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->message, $this->message->setTo($this->email));
         $this->headers->set('To', $this->email);
+        $this->assertEquals($this->email, $this->message->getTo());
         $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
@@ -107,6 +110,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
         $subject = 'Example message';
         $this->assertEquals($this->message, $this->message->setSubject($subject));
         $this->headers->set('Subject', $subject, true);
+        $this->assertEquals($subject, $this->message->getSubject());
         $this->assertEquals($this->headers->toString(), $this->message->getHeaders());
     }
 
