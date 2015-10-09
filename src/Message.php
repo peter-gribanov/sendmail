@@ -11,6 +11,7 @@
 namespace Sendmail;
 
 use Sendmail\Message\Headers;
+
 /**
  * Message
  *
@@ -27,13 +28,6 @@ class Message
     protected $charset = Headers::DEFAULT_CHARSET;
 
     /**
-     * Message text
-     *
-     * @var string
-     */
-    protected $text = '';
-
-    /**
      * In HTML format
      *
      * @var boolean
@@ -46,6 +40,34 @@ class Message
      * @var \Sendmail\Message\Headers
      */
     protected $headers;
+
+    /**
+     * From
+     *
+     * @var string
+     */
+    protected $from = '';
+
+    /**
+     * To
+     *
+     * @var string
+     */
+    protected $to = '';
+
+    /**
+     * Subject
+     *
+     * @var string
+     */
+    protected $subject = '';
+
+    /**
+     * Message text
+     *
+     * @var string
+     */
+    protected $text = '';
 
     /**
      * Construct
@@ -72,17 +94,13 @@ class Message
     }
 
     /**
-     * Set content type
+     * Get charset
      *
-     * @return \Sendmail\Message
+     * @return string
      */
-    protected function setContentType()
+    public function getCharset()
     {
-        $this->headers->set(
-            'Content-type',
-            'text/'.($this->in_html ? 'html' : 'plain').'; charset="'.$this->charset.'"'
-        );
-        return $this;
+        return $this->charset;
     }
 
     /**
@@ -95,8 +113,19 @@ class Message
      */
     public function setFrom($from, $name = '')
     {
+        $this->from = $from;
         $this->headers->set('From', $this->headers->foramatName($from, $name));
         return $this;
+    }
+
+    /**
+     * Get from
+     *
+     * @return string
+     */
+    public function getFrom()
+    {
+        return $this->from;
     }
 
     /**
@@ -127,6 +156,16 @@ class Message
     }
 
     /**
+     * Get to
+     *
+     * @return string
+     */
+    public function getTo()
+    {
+        return $this->to;
+    }
+
+    /**
      * Set message subject
      *
      * @param string $subject
@@ -135,8 +174,19 @@ class Message
      */
     public function setSubject($subject)
     {
+        $this->subject = $subject;
         $this->headers->set('Subject', $subject, true);
         return $this;
+    }
+
+    /**
+     * Get subject
+     *
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
     }
 
     /**
@@ -189,5 +239,19 @@ class Message
     public function __clone()
     {
         $this->headers = clone $this->headers;
+    }
+
+    /**
+     * Set content type
+     *
+     * @return \Sendmail\Message
+     */
+    protected function setContentType()
+    {
+        $this->headers->set(
+            'Content-type',
+            'text/'.($this->in_html ? 'html' : 'plain').'; charset="'.$this->charset.'"'
+        );
+        return $this;
     }
 }
