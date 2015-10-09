@@ -42,7 +42,7 @@ class Headers
     /**
      * List headers
      *
-     * @var string
+     * @var array
      */
     protected $list = array();
 
