@@ -31,6 +31,8 @@ $sender->send($message);
 
 ### Example 2 - send mail from SMTP
 
+Connect to SMTP server and push mails into him
+
 ```php
 use Sendmail\Queue;
 use Sendmail\Message;
@@ -69,7 +71,7 @@ $queue->clear();
 ```
 
 
-### Example 2 - send mail from SMTP
+### Example 3 - creation mailing list
 
 ```php
 use Sendmail\Queue;
