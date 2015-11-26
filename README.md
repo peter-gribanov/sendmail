@@ -1,6 +1,5 @@
 # sendmail
 
-
 [![Latest Stable Version](https://poser.pugx.org/gribanov/sendmail/v/stable.png)](https://packagist.org/packages/gribanov/sendmail)
 [![Latest Unstable Version](https://poser.pugx.org/gribanov/sendmail/v/unstable.png)](https://packagist.org/packages/gribanov/sendmail)
 [![Build Status](https://travis-ci.org/peter-gribanov/sendmail.svg?branch=master)](https://travis-ci.org/peter-gribanov/sendmail)
@@ -22,9 +21,9 @@ use Sendmail\Sender\Mail;
 
 $message = new Message();
 $message
-	->setTo('user@example.com')
-	->setSubject('Example subject')
-	->setMessage('Example message');
+    ->setTo('user@example.com')
+    ->setSubject('Example subject')
+    ->setMessage('Example message');
 $sender = new Mail();
 $sender->send($message);
 ```
@@ -41,30 +40,30 @@ use Sendmail\Sender\Smtp\Exception;
 
 $message1 = new Message();
 $message1
-	->setTo('user1@example.com')
-	->setSubject('Example subject 1')
-	->setMessage('Example message 1')
-	// email of the sender
-	->setFrom('sender@example.com', 'Sender');
+    ->setTo('user1@example.com')
+    ->setSubject('Example subject 1')
+    ->setMessage('Example message 1')
+    // email of the sender
+    ->setFrom('sender@example.com', 'Sender');
 
 $message2 = clone $message1;
 $message2
-	->setTo('user2@example.com')
-	->setSubject('Example subject 2')
-	->setMessage('Example message 2');
+    ->setTo('user2@example.com')
+    ->setSubject('Example subject 2')
+    ->setMessage('Example message 2');
 
 // sending messages to the queue via a direct connection to the SMTP server
 $queue = new Queue(new Smtp('example.com', 25, 'username', 'password'));
 $queue
-	->add(message1)
-	->add(message2);
+    ->add(message1)
+    ->add(message2);
 
 try {
-	// send all messages
-	var_dump($queue->send());
+    // send all messages
+    var_dump($queue->send());
 } catch (Exception $e) {
-	// SMTP dialogue
-	echo $e->getDialogue()->getLog();
+    // SMTP dialogue
+    echo $e->getDialogue()->getLog();
 }
 
 $queue->clear();
@@ -80,22 +79,22 @@ use Sendmail\Sender\Mail;
 
 $message = new Message();
 $message
-	->setSubject('Example subject')
-	->setMessage('<h1>Example message.<h1><p>You can remove this message.</p>')
-	// email of the sender
-	->setFrom('sender@example.com')
-	// send email in HTML format
-	->inHTML();
+    ->setSubject('Example subject')
+    ->setMessage('<h1>Example message.<h1><p>You can remove this message.</p>')
+    // email of the sender
+    ->setFrom('sender@example.com')
+    // send email in HTML format
+    ->inHTML();
 
 $queue = new Queue(new Mail());
 // add to queue a letter addressed to multiple recipients
 $queue->notify(
-	array(
-		'user1@example.com',
-		'user2@example.com',
-		'user3@example.com'
-	),
-	$message
+    array(
+        'user1@example.com',
+        'user2@example.com',
+        'user3@example.com'
+    ),
+    $message
 );
 
 $queue->send();
