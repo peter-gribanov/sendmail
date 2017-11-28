@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -15,7 +14,6 @@ use Sendmail\Sender\Mail;
 use Sendmail\Message;
 
 /**
- * @package Sendmail\Tests\Sender
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class MailTest extends RunkitTestCase

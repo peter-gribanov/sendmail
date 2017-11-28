@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -14,7 +13,6 @@ use Sendmail\Sender\Smtp\Dialogue;
 use Sendmail\Sender\Smtp\Exception;
 
 /**
- * @package Sendmail\Tests\Sender\Smtp
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class ExceptionTest extends \PHPUnit_Framework_TestCase
@@ -41,23 +39,23 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase
             array(
                 "200 OK\n",
                 'OK',
-                200
+                200,
             ),
             array(
                 "404 Not Found\n",
                 'Not Found',
-                404
+                404,
             ),
             array(
                 "1234 Bad status\n".
                 "Some Headers\n",
                 '4 Bad status',
-                123
+                123,
             ),
             array(
-                "No set status",
                 'No set status',
-                500
+                'No set status',
+                500,
             ),
         );
     }

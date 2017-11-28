@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -13,13 +12,12 @@ namespace Sendmail\Tests\Message;
 use Sendmail\Message\Headers;
 
 /**
- * @package Sendmail\Tests\Message
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class HeadersTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Headers
+     * Headers.
      *
      * @var Headers
      */
@@ -93,17 +91,17 @@ class HeadersTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    'To' => 'foo@example.com'
+                    'To' => 'foo@example.com',
                 ),
-                'To: foo@example.com'.Headers::EOL
+                'To: foo@example.com'.Headers::EOL,
             ),
             array(
                 array(
                     'From' => 'foo@example.com',
-                    'To' => 'bar@example.com'
+                    'To' => 'bar@example.com',
                 ),
                 'From: foo@example.com'.Headers::EOL.
-                'To: bar@example.com'.Headers::EOL
+                'To: bar@example.com'.Headers::EOL,
             ),
             array(
                 array(
@@ -112,15 +110,15 @@ class HeadersTest extends \PHPUnit_Framework_TestCase
                     'MIME-Version' => '1.0',
                     'From' => 'foo@example.com',
                     'To' => 'bar@example.com',
-                    'X-PHP-Version' => PHP_VERSION
+                    'X-PHP-Version' => PHP_VERSION,
                 ),
                 'Content-type: text/plain; charset="utf-8"'.Headers::EOL.
                 'Subject: baz'.Headers::EOL.
                 'MIME-Version: 1.0'.Headers::EOL.
                 'From: foo@example.com'.Headers::EOL.
                 'To: bar@example.com'.Headers::EOL.
-                'X-PHP-Version: '.PHP_VERSION.Headers::EOL
-            )
+                'X-PHP-Version: '.PHP_VERSION.Headers::EOL,
+            ),
         );
     }
 
@@ -133,6 +131,6 @@ class HeadersTest extends \PHPUnit_Framework_TestCase
             $this->headers->set($key, $value);
         }
         $this->assertEquals($expected, $this->headers->toString());
-        $this->assertEquals($expected, (string)$this->headers);
+        $this->assertEquals($expected, (string) $this->headers);
     }
 }

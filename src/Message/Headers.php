@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -11,36 +10,35 @@
 namespace Sendmail\Message;
 
 /**
- * Message headers
+ * Message headers.
  *
- * @package Sendmail/Message
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Headers
 {
     /**
-     * Default charset
+     * Default charset.
      *
      * @var string
      */
     const DEFAULT_CHARSET = 'utf-8';
 
     /**
-     * Headers end of line
+     * Headers end of line.
      *
      * @var string
      */
     const EOL = "\r\n";
 
     /**
-     * Message charset
+     * Message charset.
      *
      * @var string
      */
     protected $charset = self::DEFAULT_CHARSET;
 
     /**
-     * List headers
+     * List headers.
      *
      * @var array
      */
@@ -61,7 +59,7 @@ class Headers
     /**
      * @param string $key
      * @param string $value
-     * @param boolean $encode
+     * @param bool $encode
      *
      * @return self
      */
@@ -83,7 +81,7 @@ class Headers
     }
 
     /**
-     * Encode string
+     * Encode string.
      *
      * @param string $string
      *
@@ -95,7 +93,7 @@ class Headers
     }
 
     /**
-     * Foramat name
+     * Foramat name.
      *
      * @param string $email
      * @param string $name

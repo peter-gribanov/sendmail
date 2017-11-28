@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -11,35 +10,34 @@
 namespace Sendmail\Sender\Smtp;
 
 /**
- * SMTP dialogue
+ * SMTP dialogue.
  *
- * @package Sendmail\Sender\Smtp
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Dialogue
 {
     /**
-     * Dialogue text
+     * Dialogue text.
      *
      * @var string
      */
     protected $log = '';
 
     /**
-     * SMTP server connection
+     * SMTP server connection.
      *
      * @var resource
      */
     protected $connect;
 
     /**
-     * Construct
+     * Construct.
      *
      * @throws \Exception
      *
      * @param string $server
-     * @param integer $port
-     * @param integer $timeout
+     * @param int $port
+     * @param int $timeout
      */
     public function __construct($server, $port, $timeout = -1)
     {
@@ -55,6 +53,7 @@ class Dialogue
             if ($errno === 0 || !$errstr) {
                 $errstr = 'Failed connect to: '.$server.':'.$port;
             }
+
             throw new \Exception($errstr, $errno);
         }
 
@@ -63,18 +62,18 @@ class Dialogue
     }
 
     /**
-     * Sends the request and returns a response
+     * Sends the request and returns a response.
      *
      * @throws \Exception
      *
      * @param string $request
-     * @param boolean $verify
+     * @param bool $verify
      *
-     * @return boolean
+     * @return bool
      */
     public function call($request, $verify = false)
     {
-        fputs($this->connect, $request."\r\n");
+        fwrite($this->connect, $request."\r\n");
 
         $response = fread($this->connect, 4096);
         $this->log .= $request."\r\n".$response;
@@ -87,7 +86,7 @@ class Dialogue
     }
 
     /**
-     * Get dialogue text
+     * Get dialogue text.
      *
      * @return string
      */
@@ -97,7 +96,7 @@ class Dialogue
     }
 
     /**
-     * End dialogue
+     * End dialogue.
      *
      * @return self
      */
@@ -109,7 +108,7 @@ class Dialogue
     }
 
     /**
-     * Destruct
+     * Destruct.
      */
     public function __destruct()
     {

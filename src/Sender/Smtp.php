@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -14,59 +13,57 @@ use Sendmail\Message;
 use Sendmail\Sender\Smtp\Dialogue;
 
 /**
- * SMTP/ESMTP sender RFC 5321
+ * SMTP/ESMTP sender RFC 5321.
  *
- * @package Sendmail\Sender
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Smtp implements SenderInterface
 {
     /**
-     * The connection timeout
+     * The connection timeout.
      *
-     * @var integer
+     * @var int
      */
     protected $timeout = -1;
 
     /**
-     * Use a secure connection
+     * Use a secure connection.
      *
-     * @var boolean
+     * @var bool
      */
     protected $secure = false;
 
     /**
-     * SMTP server
+     * SMTP server.
      *
      * @var string
      */
     protected $server = '';
 
     /**
-     * Connection port
+     * Connection port.
      *
-     * @var integer
+     * @var int
      */
     protected $port = 25;
 
     /**
-     * Username for authorization
+     * Username for authorization.
      *
      * @var string
      */
     protected $auth_username = '';
 
     /**
-     * Password for authorization
+     * Password for authorization.
      *
      * @var string
      */
     protected $auth_password = '';
 
-
     /**
      * @param string $server
-     * @param integer $port
+     * @param int $port
      * @param string $username
      * @param string $password
      */
@@ -79,11 +76,11 @@ class Smtp implements SenderInterface
     }
 
     /**
-     * Send E-mail message
+     * Send E-mail message.
      *
      * @param Message $message
      *
-     * @return boolean
+     * @return bool
      */
     public function send(Message $message)
     {
@@ -129,9 +126,9 @@ class Smtp implements SenderInterface
     }
 
     /**
-     * Set timeout connecting to the server
+     * Set timeout connecting to the server.
      *
-     * @param integer $timeout
+     * @param int $timeout
      *
      * @return self
      */
@@ -145,15 +142,16 @@ class Smtp implements SenderInterface
     }
 
     /**
-     * Start secure connection
+     * Start secure connection.
      *
-     * @param boolean $secure
+     * @param bool $secure
      *
      * @return self
      */
     public function setSecure($secure = true)
     {
         $this->secure = $secure;
+
         return $this;
     }
 }
