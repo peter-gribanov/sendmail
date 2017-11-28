@@ -1,4 +1,5 @@
-# sendmail
+sendmail
+========
 
 [![Latest Stable Version](https://poser.pugx.org/gribanov/sendmail/v/stable.png)](https://packagist.org/packages/gribanov/sendmail)
 [![Latest Unstable Version](https://poser.pugx.org/gribanov/sendmail/v/unstable.png)](https://packagist.org/packages/gribanov/sendmail)
@@ -9,9 +10,10 @@
 
 Package for send mails.
 
-## Examples
+Examples
+--------
 
-### Example 1 - send mail from mail() function
+### Send mail from mail() function
 
 Send one message by the PHP function [mail()](http://php.net/manual/en/book.mail.php)
 
@@ -23,12 +25,12 @@ $message = new Message();
 $message
     ->setTo('user@example.com')
     ->setSubject('Example subject')
-    ->setMessage('Example message');
+    ->setText('Example message');
 $sender = new Mail();
 $sender->send($message);
 ```
 
-### Example 2 - send mail from SMTP
+### Send mail from SMTP
 
 Connect to SMTP server and push mails into him
 
@@ -42,7 +44,7 @@ $message1 = new Message();
 $message1
     ->setTo('user1@example.com')
     ->setSubject('Example subject 1')
-    ->setMessage('Example message 1')
+    ->setText('Example message 1')
     // email of the sender
     ->setFrom('sender@example.com', 'Sender');
 
@@ -50,13 +52,13 @@ $message2 = clone $message1;
 $message2
     ->setTo('user2@example.com')
     ->setSubject('Example subject 2')
-    ->setMessage('Example message 2');
+    ->setText('Example message 2');
 
 // sending messages to the queue via a direct connection to the SMTP server
 $queue = new Queue(new Smtp('example.com', 25, 'username', 'password'));
 $queue
-    ->add(message1)
-    ->add(message2);
+    ->add($message1)
+    ->add($message2);
 
 try {
     // send all messages
@@ -70,7 +72,7 @@ $queue->clear();
 ```
 
 
-### Example 3 - creation mailing list
+### Creation mailing list
 
 ```php
 use Sendmail\Queue;
@@ -80,7 +82,7 @@ use Sendmail\Sender\Mail;
 $message = new Message();
 $message
     ->setSubject('Example subject')
-    ->setMessage('<h1>Example message.<h1><p>You can remove this message.</p>')
+    ->setText('<h1>Example message.<h1><p>You can remove this message.</p>')
     // email of the sender
     ->setFrom('sender@example.com')
     // send email in HTML format
