@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -11,15 +10,14 @@
 namespace Sendmail\Tests;
 
 /**
- * Runkit test case
+ * Runkit test case.
  *
- * @package Sendmail\Tests
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class RunkitTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Runkit override functions
+     * Runkit override functions.
      *
      * @var array
      */
@@ -40,7 +38,7 @@ class RunkitTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Mark test skipped if runkit is not enabled
+     * Mark test skipped if runkit is not enabled.
      */
     protected function skipTestIfNoRunkit()
     {
@@ -48,34 +46,34 @@ class RunkitTestCase extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Runkit extension is not loaded');
         }
     }
- 
+
     /**
-    * Override given functions with mock
-    *
-    * @param array $func_list
-    *
-    * @return \PHPUnit_Framework_MockObject_MockObject
-    */
+     * Override given functions with mock.
+     *
+     * @param array $func_list
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
     protected function getRunkitMock(array $funcs)
     {
         $this->skipTestIfNoRunkit();
- 
+
         $mock = $this->getMock('stdClass', $funcs);
- 
+
         foreach ($funcs as $func) {
             $this->runkitOverride(
                 $func,
                 '',
-                'return ' . __CLASS__ . "::call('{$func}', func_get_args());",
+                'return '.__CLASS__."::call('{$func}', func_get_args());",
                 $mock
             );
         }
- 
+
         return $mock;
     }
 
     /**
-     * Override function
+     * Override function.
      *
      * @param string $func
      * @param string $args
@@ -85,36 +83,36 @@ class RunkitTestCase extends \PHPUnit_Framework_TestCase
     protected function runkitOverride($func, $args, $body, $mock = null)
     {
         $this->skipTestIfNoRunkit();
- 
+
         if (array_key_exists($func, self::$override_functions)) {
             throw new \RuntimeException("Function '{$func}' is marked as mocked already");
         }
         self::$override_functions[$func] = $mock;
-        \runkit_function_copy($func, $func . self::BACKUP_SUFFIX);
+        \runkit_function_copy($func, $func.self::BACKUP_SUFFIX);
         \runkit_function_redefine($func, $args, $body);
     }
 
     /**
-     * Revert previously overridden function
+     * Revert previously overridden function.
      *
      * @param string $func
      */
     protected function runkitRevert($func)
     {
         $this->skipTestIfNoRunkit();
- 
+
         if (!array_key_exists($func, self::$override_functions)) {
             throw new \RuntimeException("Function '{$func}' is not marked as mocked");
         }
         unset(self::$override_functions[$func]);
- 
+
         \runkit_function_remove($func);
-        \runkit_function_copy($func . self::BACKUP_SUFFIX, $func);
-        \runkit_function_remove($func . self::BACKUP_SUFFIX);
+        \runkit_function_copy($func.self::BACKUP_SUFFIX, $func);
+        \runkit_function_remove($func.self::BACKUP_SUFFIX);
     }
- 
+
     /**
-     * Revert all previously overridden functions
+     * Revert all previously overridden functions.
      */
     protected function runkitRevertAll()
     {

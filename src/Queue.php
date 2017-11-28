@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -13,22 +12,21 @@ namespace Sendmail;
 use Sendmail\Sender\SenderInterface;
 
 /**
- * E-mail queue
+ * E-mail queue.
  *
- * @package Sendmail
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Queue implements \IteratorAggregate, \Countable
 {
     /**
-     * List messages
+     * List messages.
      *
      * @var array
      */
     protected $messages = array();
 
     /**
-     * Mail sender
+     * Mail sender.
      *
      * @var SenderInterface
      */
@@ -43,7 +41,7 @@ class Queue implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Get iterator
+     * Get iterator.
      *
      * @return \ArrayIterator
      */
@@ -53,9 +51,9 @@ class Queue implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Возвращает количество сообщений
+     * Возвращает количество сообщений.
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {
@@ -63,7 +61,7 @@ class Queue implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Clear list messages
+     * Clear list messages.
      *
      * @return self
      */
@@ -76,7 +74,7 @@ class Queue implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Add message
+     * Add message.
      *
      * @param Message $message
      *
@@ -90,7 +88,7 @@ class Queue implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Get sender
+     * Get sender.
      *
      * @return SenderInterface
      */
@@ -100,7 +98,7 @@ class Queue implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Add a message addressed to list recipients
+     * Add a message addressed to list recipients.
      *
      * @param array $recipients
      * @param Message $message
@@ -118,9 +116,9 @@ class Queue implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Send all messages
+     * Send all messages.
      *
-     * @return boolean
+     * @return bool
      */
     public function send()
     {

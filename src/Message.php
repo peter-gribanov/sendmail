@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -13,64 +12,63 @@ namespace Sendmail;
 use Sendmail\Message\Headers;
 
 /**
- * Message
+ * Message.
  *
- * @package Sendmail
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Message
 {
     /**
-     * Message charset
+     * Message charset.
      *
      * @var string
      */
     protected $charset = Headers::DEFAULT_CHARSET;
 
     /**
-     * In HTML format
+     * In HTML format.
      *
-     * @var boolean
+     * @var bool
      */
     protected $in_html = false;
 
     /**
-     * Headers
+     * Headers.
      *
      * @var Headers
      */
     protected $headers;
 
     /**
-     * From
+     * From.
      *
      * @var string
      */
     protected $from = '';
 
     /**
-     * To
+     * To.
      *
      * @var string
      */
     protected $to = '';
 
     /**
-     * Subject
+     * Subject.
      *
      * @var string
      */
     protected $subject = '';
 
     /**
-     * Message text
+     * Message text.
      *
      * @var string
      */
     protected $text = '';
 
     /**
-     * Construct
+     * Construct.
      */
     public function __construct()
     {
@@ -80,7 +78,7 @@ class Message
     }
 
     /**
-     * Set message charset
+     * Set message charset.
      *
      * @param string $charset
      *
@@ -95,7 +93,7 @@ class Message
     }
 
     /**
-     * Get message charset
+     * Get message charset.
      *
      * @return string
      */
@@ -105,7 +103,7 @@ class Message
     }
 
     /**
-     * Send from E-mail
+     * Send from E-mail.
      *
      * @param string $from
      * @param string $name
@@ -121,7 +119,7 @@ class Message
     }
 
     /**
-     * Get from E-mail
+     * Get from E-mail.
      *
      * @return string
      */
@@ -131,7 +129,7 @@ class Message
     }
 
     /**
-     * Set reply to E-mail
+     * Set reply to E-mail.
      *
      * @param string $to
      * @param string $name
@@ -146,7 +144,7 @@ class Message
     }
 
     /**
-     * Send to E-mail
+     * Send to E-mail.
      *
      * @param string $to
      *
@@ -161,7 +159,7 @@ class Message
     }
 
     /**
-     * Get to E-mail
+     * Get to E-mail.
      *
      * @return string
      */
@@ -171,7 +169,7 @@ class Message
     }
 
     /**
-     * Set message subject
+     * Set message subject.
      *
      * @param string $subject
      *
@@ -186,7 +184,7 @@ class Message
     }
 
     /**
-     * Get message subject
+     * Get message subject.
      *
      * @return string
      */
@@ -196,7 +194,7 @@ class Message
     }
 
     /**
-     * Set message text
+     * Set message text.
      *
      * @param string $text
      *
@@ -210,7 +208,7 @@ class Message
     }
 
     /**
-     * Get message text
+     * Get message text.
      *
      * @return string
      */
@@ -220,7 +218,7 @@ class Message
     }
 
     /**
-     * Send E-mail in HTML format
+     * Send E-mail in HTML format.
      *
      * @return self
      */
@@ -253,6 +251,7 @@ class Message
             'Content-type',
             'text/'.($this->in_html ? 'html' : 'plain').'; charset="'.$this->charset.'"'
         );
+
         return $this;
     }
 }

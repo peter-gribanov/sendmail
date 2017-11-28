@@ -1,8 +1,7 @@
 <?php
 /**
- * SendMail package
+ * SendMail package.
  *
- * @package   SendMail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -13,19 +12,18 @@ namespace Sendmail\Sender;
 use Sendmail\Message;
 
 /**
- * E-mail messages sent via PHP function mail()
+ * E-mail messages sent via PHP function mail().
  *
- * @package SendMail\Sender
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class Mail implements SenderInterface
 {
     /**
-     * Send E-mail message
+     * Send E-mail message.
      *
      * @param Message $message
      *
-     * @return boolean
+     * @return bool
      */
     public function send(Message $message)
     {

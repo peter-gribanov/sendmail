@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -15,27 +14,27 @@ use Sendmail\Message;
 use Sendmail\Sender\SenderInterface;
 
 /**
- * @package Sendmail\Tests
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class QueueTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Sender
+     * Sender.
      *
      * @var \PHPUnit_Framework_MockObject_MockObject|SenderInterface
      */
     protected $sender;
 
     /**
-     * Queue
+     * Queue.
      *
      * @var \Sendmail\Queue
      */
     protected $queue;
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -45,7 +44,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get message mock object
+     * Get message mock object.
      *
      * @return \PHPUnit_Framework_MockObject_MockObject|Message
      */
@@ -63,7 +62,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get messages
+     * Get messages.
      *
      * @return array
      */
@@ -71,27 +70,27 @@ class QueueTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array()
-            ),
-            array(
-                array(
-                    new Message()
-                )
+                array(),
             ),
             array(
                 array(
                     new Message(),
-                    new Message()
-                )
+                ),
             ),
             array(
                 array(
                     new Message(),
                     new Message(),
+                ),
+            ),
+            array(
+                array(
                     new Message(),
-                    new Message()
-                )
-            )
+                    new Message(),
+                    new Message(),
+                    new Message(),
+                ),
+            ),
         );
     }
 
@@ -141,59 +140,59 @@ class QueueTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(),
-                array()
-            ),
-            array(
                 array(),
-                array(
-                    'foo@example.com'
-                )
-            ),
-            array(
-                array(
-                    'foo@example.com'
-                ),
-                array(
-                    'foo@example.com'
-                )
             ),
             array(
                 array(),
                 array(
                     'foo@example.com',
-                    'bar@example.com'
-                )
+                ),
             ),
             array(
                 array(
                     'foo@example.com',
-                    'bar@example.com'
                 ),
                 array(
                     'foo@example.com',
-                    'bar@example.com'
-                )
+                ),
             ),
             array(
                 array(),
                 array(
                     'foo@example.com',
                     'bar@example.com',
-                    'baz@example.com'
-                )
+                ),
             ),
             array(
                 array(
                     'foo@example.com',
                     'bar@example.com',
-                    'baz@example.com'
                 ),
                 array(
                     'foo@example.com',
                     'bar@example.com',
-                    'baz@example.com'
-                )
-            )
+                ),
+            ),
+            array(
+                array(),
+                array(
+                    'foo@example.com',
+                    'bar@example.com',
+                    'baz@example.com',
+                ),
+            ),
+            array(
+                array(
+                    'foo@example.com',
+                    'bar@example.com',
+                    'baz@example.com',
+                ),
+                array(
+                    'foo@example.com',
+                    'bar@example.com',
+                    'baz@example.com',
+                ),
+            ),
         );
     }
 
@@ -209,7 +208,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->queue, $this->queue->notify($recipients, $message));
 
         // check list messages
-        $this->assertEquals(count($recipients)+count($base), $this->queue->count());
+        $this->assertEquals(count($recipients) + count($base), $this->queue->count());
         $expected = array_merge($base, $recipients);
         $expected_message = new Message();
         foreach ($this->queue as $key => $message) {

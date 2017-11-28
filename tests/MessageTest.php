@@ -1,8 +1,7 @@
 <?php
 /**
- * Sendmail package
+ * Sendmail package.
  *
- * @package   Sendmail
  * @author    Peter Gribanov <info@peter-gribanov.ru>
  * @copyright Copyright (c) 2010, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT MIT
@@ -14,27 +13,26 @@ use Sendmail\Message;
 use Sendmail\Message\Headers;
 
 /**
- * @package Sendmail\Tests
  * @author  Peter Gribanov <info@peter-gribanov.ru>
  */
 class MessageTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Message
+     * Message.
      *
      * @var Message
      */
     protected $message;
 
     /**
-     * Headers
+     * Headers.
      *
      * @var Headers
      */
     protected $headers;
 
     /**
-     * Example email
+     * Example email.
      *
      * @var string
      */
