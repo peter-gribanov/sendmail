@@ -19,16 +19,12 @@ namespace Sendmail\Sender\Smtp;
 class Exception extends \Exception
 {
     /**
-     * Dialogue
-     *
-     * @var \Sendmail\Sender\Smtp\Dialogue
+     * @var Dialogue
      */
     protected $dialogue;
 
     /**
-     * Construct
-     *
-     * @param \Sendmail\Sender\Smtp\Dialogue $dialogue
+     * @param Dialogue $dialogue
      */
     public function __construct(Dialogue $dialogue)
     {
@@ -44,9 +40,7 @@ class Exception extends \Exception
     }
 
     /**
-     * Get dialogue
-     *
-     * @return \Sendmail\Sender\Smtp\Dialogue
+     * @return Dialogue
      */
     public function getDialogue()
     {

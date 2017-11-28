@@ -10,7 +10,6 @@
 
 namespace Sendmail\Sender;
 
-use Sendmail\Sender\SenderInterface;
 use Sendmail\Message;
 
 /**
@@ -24,7 +23,7 @@ class Mail implements SenderInterface
     /**
      * Send E-mail message
      *
-     * @param \Sendmail\Message $message
+     * @param Message $message
      *
      * @return boolean
      */

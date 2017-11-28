@@ -99,11 +99,12 @@ class Dialogue
     /**
      * End dialogue
      *
-     * @return \Sendmail\Sender\Smtp\Dialogue
+     * @return self
      */
     public function end()
     {
         fclose($this->connect);
+
         return $this;
     }
 

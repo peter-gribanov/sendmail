@@ -37,7 +37,7 @@ class Message
     /**
      * Headers
      *
-     * @var \Sendmail\Message\Headers
+     * @var Headers
      */
     protected $headers;
 
@@ -84,17 +84,18 @@ class Message
      *
      * @param string $charset
      *
-     * @return \Sendmail\Message
+     * @return self
      */
     public function setCharset($charset)
     {
         $this->charset = $charset;
         $this->headers->setCharset($charset);
+
         return $this->setContentType();
     }
 
     /**
-     * Get charset
+     * Get message charset
      *
      * @return string
      */
@@ -104,22 +105,23 @@ class Message
     }
 
     /**
-     * Set E-mail from
+     * Send from E-mail
      *
      * @param string $from
      * @param string $name
      *
-     * @return \Sendmail\Message
+     * @return self
      */
     public function setFrom($from, $name = '')
     {
         $this->from = $from;
         $this->headers->set('From', $this->headers->foramatName($from, $name));
+
         return $this;
     }
 
     /**
-     * Get from
+     * Get from E-mail
      *
      * @return string
      */
@@ -129,35 +131,37 @@ class Message
     }
 
     /**
-     * Set reply to
+     * Set reply to E-mail
      *
      * @param string $to
      * @param string $name
      *
-     * @return \Sendmail\Message
+     * @return self
      */
     public function setReplyTo($to, $name = '')
     {
         $this->headers->set('Reply-To', $this->headers->foramatName($to, $name));
+
         return $this;
     }
 
     /**
-     * Set E-mail to
+     * Send to E-mail
      *
      * @param string $to
      *
-     * @return \Sendmail\Message
+     * @return self
      */
     public function setTo($to)
     {
         $this->to = $to;
         $this->headers->set('To', $to);
+
         return $this;
     }
 
     /**
-     * Get to
+     * Get to E-mail
      *
      * @return string
      */
@@ -171,17 +175,18 @@ class Message
      *
      * @param string $subject
      *
-     * @return \Sendmail\Message
+     * @return self
      */
     public function setSubject($subject)
     {
         $this->subject = $subject;
         $this->headers->set('Subject', $subject, true);
+
         return $this;
     }
 
     /**
-     * Get subject
+     * Get message subject
      *
      * @return string
      */
@@ -195,11 +200,12 @@ class Message
      *
      * @param string $text
      *
-     * @return \Sendmail\Message
+     * @return self
      */
     public function setText($text)
     {
         $this->text = $text;
+
         return $this;
     }
 
@@ -216,17 +222,16 @@ class Message
     /**
      * Send E-mail in HTML format
      *
-     * @return \Sendmail\Message
+     * @return self
      */
     public function inHTML()
     {
         $this->in_html = true;
+
         return $this->setContentType();
     }
 
     /**
-     * Get E-mail headers
-     *
      * @return string
      */
     public function getHeaders()
@@ -234,18 +239,13 @@ class Message
         return $this->headers->toString();
     }
 
-    /**
-     * Clone
-     */
     public function __clone()
     {
         $this->headers = clone $this->headers;
     }
 
     /**
-     * Set content type
-     *
-     * @return \Sendmail\Message
+     * @return self
      */
     protected function setContentType()
     {

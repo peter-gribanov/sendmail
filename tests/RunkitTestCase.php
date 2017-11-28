@@ -123,10 +123,6 @@ class RunkitTestCase extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
-     */
     protected function tearDown()
     {
         $this->runkitRevertAll();

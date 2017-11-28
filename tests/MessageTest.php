@@ -22,14 +22,14 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     /**
      * Message
      *
-     * @var \Sendmail\Message
+     * @var Message
      */
     protected $message;
 
     /**
      * Headers
      *
-     * @var \Sendmail\Message\Headers
+     * @var Headers
      */
     protected $headers;
 
@@ -40,10 +40,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     protected $email = 'foo@example.com';
 
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
-     */
     protected function setUp()
     {
         $this->message = new Message();

@@ -12,7 +12,7 @@ namespace Sendmail\Tests;
 
 use Sendmail\Queue;
 use Sendmail\Message;
-use Sendmail\Message\Headers;
+use Sendmail\Sender\SenderInterface;
 
 /**
  * @package Sendmail\Tests
@@ -23,7 +23,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
     /**
      * Sender
      *
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|SenderInterface
      */
     protected $sender;
 
@@ -47,7 +47,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
     /**
      * Get message mock object
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockObject|Message
      */
     protected function getMessage()
     {
@@ -58,6 +58,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
         $message
             ->expects($this->any())
             ->method('__clone');
+
         return $message;
     }
 

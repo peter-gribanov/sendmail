@@ -11,7 +11,6 @@
 namespace Sendmail;
 
 use Sendmail\Sender\SenderInterface;
-use Sendmail\Message;
 
 /**
  * E-mail queue
@@ -31,14 +30,12 @@ class Queue implements \IteratorAggregate, \Countable
     /**
      * Mail sender
      *
-     * @var \Sendmail\Sender\SenderInterface
+     * @var SenderInterface
      */
     protected $sender;
 
     /**
-     * Construct
-     *
-     * @param \Sendmail\Sender\SenderInterface $sender
+     * @param SenderInterface $sender
      */
     public function __construct(SenderInterface $sender)
     {
@@ -68,32 +65,34 @@ class Queue implements \IteratorAggregate, \Countable
     /**
      * Clear list messages
      *
-     * @return \Sendmail\Collection
+     * @return self
      */
     public function clear()
     {
         unset($this->messages);
         $this->messages = array();
+
         return $this;
     }
 
     /**
      * Add message
      *
-     * @param \Sendmail\Message $message
+     * @param Message $message
      *
-     * @return \Sendmail\Collection
+     * @return self
      */
     public function add(Message $message)
     {
         $this->messages[] = clone $message;
+
         return $this;
     }
 
     /**
      * Get sender
      *
-     * @return \Sendmail\Sender\SenderInterface
+     * @return SenderInterface
      */
     public function getSender()
     {
@@ -104,9 +103,9 @@ class Queue implements \IteratorAggregate, \Countable
      * Add a message addressed to list recipients
      *
      * @param array $recipients
-     * @param \Sendmail\Message $message
+     * @param Message $message
      *
-     * @return \Sendmail\Collection
+     * @return self
      */
     public function notify(array $recipients, Message $message)
     {
@@ -114,6 +113,7 @@ class Queue implements \IteratorAggregate, \Countable
         foreach ($recipients as $recipient) {
             $this->add($message->setTo($recipient));
         }
+
         return $this;
     }
 
@@ -129,6 +129,7 @@ class Queue implements \IteratorAggregate, \Countable
                 return false;
             }
         }
+
         return true;
     }
 }

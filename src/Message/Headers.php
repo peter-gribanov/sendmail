@@ -47,36 +47,32 @@ class Headers
     protected $list = array();
 
     /**
-     * Set charset
-     *
      * @param string $charset
      *
-     * @return \Sendmail\Message\Headers
+     * @return Headers
      */
     public function setCharset($charset)
     {
         $this->charset = $charset;
+
         return $this;
     }
 
     /**
-     * Set
-     *
      * @param string $key
      * @param string $value
      * @param boolean $encode
      *
-     * @return \Sendmail\Message\Headers
+     * @return self
      */
     public function set($key, $value, $encode = false)
     {
         $this->list[$key] = $encode ? $this->encode($value) : $value;
+
         return $this;
     }
 
     /**
-     * Get
-     *
      * @param string $key
      *
      * @return string|null
@@ -112,8 +108,6 @@ class Headers
     }
 
     /**
-     * To string
-     *
      * @return string
      */
     public function toString()
@@ -122,12 +116,11 @@ class Headers
         foreach ($this->list as $key => $value) {
             $headers .= $key.': '.$value.self::EOL;
         }
+
         return $headers;
     }
 
     /**
-     * To string
-     *
      * @return string
      */
     public function __toString()

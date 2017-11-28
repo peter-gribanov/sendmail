@@ -23,7 +23,7 @@ interface SenderInterface
     /**
      * Send E-mail message
      *
-     * @param \Sendmail\Message $message
+     * @param Message $message
      *
      * @return boolean
      */

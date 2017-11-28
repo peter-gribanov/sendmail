@@ -10,7 +10,6 @@
 
 namespace Sendmail\Sender;
 
-use Sendmail\Sender\SenderInterface;
 use Sendmail\Message;
 use Sendmail\Sender\Smtp\Dialogue;
 
@@ -66,8 +65,6 @@ class Smtp implements SenderInterface
 
 
     /**
-     * Construct
-     *
      * @param string $server
      * @param integer $port
      * @param string $username
@@ -84,7 +81,7 @@ class Smtp implements SenderInterface
     /**
      * Send E-mail message
      *
-     * @param \Sendmail\Message $message
+     * @param Message $message
      *
      * @return boolean
      */
@@ -136,13 +133,14 @@ class Smtp implements SenderInterface
      *
      * @param integer $timeout
      *
-     * @return \Sendmail\Sender\Smtp
+     * @return self
      */
     public function setTimeOut($timeout)
     {
         if ($timeout > 0) {
             $this->timeout = $timeout;
         }
+
         return $this;
     }
 
@@ -151,7 +149,7 @@ class Smtp implements SenderInterface
      *
      * @param boolean $secure
      *
-     * @return \Sendmail\Sender\Smtp
+     * @return self
      */
     public function setSecure($secure = true)
     {

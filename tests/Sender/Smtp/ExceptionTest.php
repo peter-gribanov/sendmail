@@ -10,6 +10,7 @@
 
 namespace Sendmail\Tests\Sender\Smtp;
 
+use Sendmail\Sender\Smtp\Dialogue;
 use Sendmail\Sender\Smtp\Exception;
 
 /**
@@ -19,16 +20,10 @@ use Sendmail\Sender\Smtp\Exception;
 class ExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Dialogue
-     *
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|Dialogue
      */
     protected $dialogue;
 
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
-     */
     protected function setUp()
     {
         $this->dialogue = $this
@@ -38,8 +33,6 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get log
-     *
      * @return array
      */
     public function getLogs()

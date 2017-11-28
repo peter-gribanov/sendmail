@@ -21,14 +21,10 @@ class HeadersTest extends \PHPUnit_Framework_TestCase
     /**
      * Headers
      *
-     * @var \Sendmail\Message\Headers
+     * @var Headers
      */
     protected $headers;
 
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
-     */
     protected function setUp()
     {
         $this->headers = new Headers();
