@@ -1,12 +1,14 @@
 sendmail
 ========
 
-[![Latest Stable Version](https://poser.pugx.org/gribanov/sendmail/v/stable.png)](https://packagist.org/packages/gribanov/sendmail)
-[![Latest Unstable Version](https://poser.pugx.org/gribanov/sendmail/v/unstable.png)](https://packagist.org/packages/gribanov/sendmail)
-[![Build Status](https://travis-ci.org/peter-gribanov/sendmail.svg?branch=master)](https://travis-ci.org/peter-gribanov/sendmail)
-[![Code Coverage](https://scrutinizer-ci.com/g/peter-gribanov/sendmail/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/peter-gribanov/sendmail/?branch=master)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/0393f547-c429-47ef-8255-4607d6e40231/mini.png)](https://insight.sensiolabs.com/projects/0393f547-c429-47ef-8255-4607d6e40231)
-[![License](https://poser.pugx.org/gribanov/sendmail/license.png)](https://packagist.org/packages/gribanov/sendmail)
+[![Latest Stable Version](https://img.shields.io/packagist/v/gribanov/sendmail.svg?maxAge=3600&label=stable)](https://packagist.org/packages/gribanov/sendmail)
+[![Total Downloads](https://img.shields.io/packagist/dt/gribanov/sendmail.svg?maxAge=3600)](https://packagist.org/packages/gribanov/sendmail)
+[![Build Status](https://img.shields.io/travis/peter-gribanov/sendmail.svg?maxAge=3600)](https://travis-ci.org/peter-gribanov/sendmail)
+[![Coverage Status](https://img.shields.io/coveralls/peter-gribanov/sendmail.svg?maxAge=3600)](https://coveralls.io/github/peter-gribanov/sendmail?branch=master)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/peter-gribanov/sendmail.svg?maxAge=3600)](https://scrutinizer-ci.com/g/peter-gribanov/sendmail/?branch=master)
+[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/0393f547-c429-47ef-8255-4607d6e40231.svg?maxAge=3600&label=SLInsight)](https://insight.sensiolabs.com/projects/0393f547-c429-47ef-8255-4607d6e40231)
+[![StyleCI](https://styleci.io/repos/33310622/shield?branch=master)](https://styleci.io/repos/33310622)
+[![License](https://img.shields.io/packagist/l/gribanov/sendmail.svg?maxAge=3600)](https://github.com/peter-gribanov/sendmail)
 
 Package for send mails.
 
