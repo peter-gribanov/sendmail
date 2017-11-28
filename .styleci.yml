@@ -1,0 +1,6 @@
+preset: symfony
+
+disabled:
+  - short_array_syntax
+  - phpdoc_align
+  - yoda_style
